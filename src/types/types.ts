@@ -16,7 +16,6 @@ export interface Products{
     name:string
     photoUrl:string
     price:number
-    provider:string
 }
 
 export interface User{
@@ -40,8 +39,7 @@ export interface Order{
     photoUrl:string
     quantity:number
     total:number
-    moment:string
-    restaurant:string 
+    moment:string 
     client:string
     state:string
     address:string

@@ -27,7 +27,7 @@ const Profile = ()=>{
     useEffect(()=>{
 
         if(!token){
-            navigate('/ifuture_react')
+            navigate('/meu-delivery')
             return
         }
     }, [])
@@ -61,7 +61,7 @@ const Profile = ()=>{
 
         if(decide){
             localStorage.clear()
-            navigate('/ifuture_react')
+            navigate('/meu-delivery')
         }
     }
 
@@ -109,7 +109,7 @@ const Profile = ()=>{
             }
             center={<div/>}
             leftIcon={
-                <IoMdHome className="header-icon" onClick={()=> navigate('/ifuture_react')}/>
+                <IoMdHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
             }/>        
         <Container>    
             <h1>Perfil do usuário</h1>            
@@ -120,7 +120,7 @@ const Profile = ()=>{
                     <span className='properties'>Email:</span> {user.email} <br />
                     <span className='properties'>Telefone:</span> {formatPhoneNumber(user.phone)}
                 </div>
-                <MdEdit className="icon" onClick={()=> navigate('/ifuture_react/edit-profile')} />
+                <MdEdit className="icon" onClick={()=> navigate('/meu-delivery/edit-profile')} />
             </div>
             <div className="address-section">
                 <div style={{width:'100%'}}>
@@ -133,7 +133,7 @@ const Profile = ()=>{
                     </div>
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/ifuture_react/user-address')
+                    navigate('/meu-delivery/user-address')
                 }}/>
             </div>
             <div className="addressAndName">
@@ -154,11 +154,6 @@ const Profile = ()=>{
                             <b>Quantidade:</b> {order.quantity}<br/>
                             <b>Total:</b> R$ {Number(order.total).toFixed(2)}<br/>
                             <b>Pagamento:</b> {order.paymentmethod === 'money' ? 'Dinheiro' : 'Crédito'}<br/>
-                            <b>Restaurante:</b> Clique <a onClick={() =>{
-                                localStorage.setItem('selectedOrderId', order.id)
-                                localStorage.setItem('restaurantId', order.restaurant)
-                                navigate(`/ifuture_react/detail`)
-                            }}>aqui</a> para ver o restaurante do pedido
                         </div>
                         <MdDelete className='icon' style={{
                                 color: hoveredItemId === order.id ? 'red' : 'black'

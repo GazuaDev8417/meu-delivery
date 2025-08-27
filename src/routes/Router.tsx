@@ -6,18 +6,20 @@ import Signup from "../pages/signup/Signup"
 import UserAddress from "../pages/address/UserAddress"
 import Login from "../pages/login/Login"
 import Profile from "../pages/profile/Profile"
+import EditProfile from "../pages/editProfile/EditProfile"
 
 
 
 const Router:FC = ()=>{
     return(
         <Routes>
-            <Route path="/ifuture_react/" element={<Detail/>} />
-            <Route path="/ifuture_react/cart" element={<Cart/>} />
-            <Route path="/ifuture_react/profile" element={<Profile/>} />
-            <Route path="/ifuture_react/signup" element={<Signup/>} />
-            <Route path="/ifuture_react/user-address" element={<UserAddress/>} />
-            <Route path="/ifuture_react/login" element={<Login/>} />
+            <Route path="/meu-delivery" element={<Detail/>} />
+            <Route path="/meu-delivery/cart" element={<Cart/>} />
+            <Route path="/meu-delivery/profile" element={<Profile/>} />
+            <Route path="/meu-delivery/edit-profile" element={<EditProfile/>} />
+            <Route path="/meu-delivery/signup" element={<Signup/>} />
+            <Route path="/meu-delivery/user-address" element={<UserAddress/>} />
+            <Route path="/meu-delivery/login" element={<Login/>} />
         </Routes>
     )
 }

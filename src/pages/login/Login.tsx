@@ -30,7 +30,7 @@ const Login:FC = ()=>{
         const token = localStorage.getItem('token')
         
         if(token){
-            navigate('/ifuture_react/')
+            navigate('/meu-delivery')
         }
     }, [])
 
@@ -58,7 +58,7 @@ const Login:FC = ()=>{
 
         axios.post(`${BASE_URL}/login`, body).then(res=>{
             localStorage.setItem('token', res.data)
-            navigate('/ifuture_react/')
+            navigate('/meu-delivery')
         }).catch(e=>{
             alert(e.response.data)
         })
@@ -70,7 +70,7 @@ const Login:FC = ()=>{
                 leftIcon={
                     <IoIosArrowBack 
                         className="header-icon"
-                        onClick={()=> navigate('/ifuture_react/detail')} />
+                        onClick={()=> navigate('/meu-delivery/detail')} />
                 }
                 center={ <h2 className="logo-title">REDE SOCIAL FAST-FOOD</h2> }
                 rightIcon={ <div/> }

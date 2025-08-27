@@ -2,7 +2,8 @@ import { FC, useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
-import { FaCartShopping } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6"
+import { IoPerson } from "react-icons/io5"
 import { Products, Restaurant } from "../../types/types"
 import { Container/* , Overlay, Sidebar */ } from './styled'
 import axios from "axios"
@@ -128,7 +129,7 @@ const Detail:FC = ()=>{
         if(!token){
             const decide = window.confirm('Necessário efetuar login para fazer pedidos')
             if(decide){
-                navigate('/ifuture_react/login')
+                navigate('/meu-delivery/login')
             }
             return
         }
@@ -143,8 +144,7 @@ const Detail:FC = ()=>{
             photoUrl: product.photoUrl,
             quantity: 1,
             total: product.price,  
-            momentString: now, 
-            restaurant: product.provider,
+            momentString: now,
             description: product.description
         }
         
@@ -152,13 +152,13 @@ const Detail:FC = ()=>{
             getAllOrders()
             const decide = confirm(res.data)
             if(decide){
-                navigate('/ifuture_react/cart')
+                navigate('/meu-delivery/cart')
             }
         }).catch(e=>{
             const message = e.response?.data || 'Erro ao enviar pedido. Tente novamente.'
             const decide = confirm(message)
             if(decide){
-                navigate('/ifuture_react/cart')
+                navigate('/meu-delivery/cart')
             }
         })
     }
@@ -175,12 +175,18 @@ const Detail:FC = ()=>{
     return(
         <>
         <Header
-            leftIcon={ <div/> }
+            leftIcon={ 
+                token ? (
+                    <FaCartShopping className="header-icon" onClick={()=>{
+                        navigate('/meu-delivery/cart')
+                    }}/>
+                ) : <div/>
+            }
             center={ <div/> }
             rightIcon={
                 token ? (
-                    <FaCartShopping className="header-icon" onClick={()=>{
-                        navigate('/ifuture_react/cart')
+                    <IoPerson className="header-icon" onClick={()=>{
+                        navigate('/meu-delivery/profile')
                     }}/>
                 ) : <div/>
             }/>
@@ -190,7 +196,7 @@ const Detail:FC = ()=>{
                 <h3>{restaurant.name}</h3>
                 <ul>
                     {token && (
-                        <li onClick={() => navigate('/ifuture_react/cart')}>
+                        <li onClick={() => navigate('/meu-delivery/cart')}>
                             Carrinho
                         </li>
                     )}

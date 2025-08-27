@@ -1,12 +1,10 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-import { BASE_URL } from "../../constants/url"
 import { handleKeyPress } from "../../utils/inputsAndKeys"
-import { FaEyeSlash, FaEye } from 'react-icons/fa'
-import { Container } from "./styled"
-import Header from "../../components/Header"
 import formatPhoneNumber from "../../utils/formatPhoneNumber"
+import { BASE_URL } from "../../constants/url"
+import { Container } from "./styled"
 
 
 
@@ -18,7 +16,8 @@ interface FormData{
 }
 
 
-const Signup:FC = ()=>{
+
+const EditProfile:FC = ()=>{
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState<boolean>(false)
     const [form, setForm] = useState<FormData>({
@@ -32,7 +31,7 @@ const Signup:FC = ()=>{
     useEffect(()=>{
         const token = localStorage.getItem('token')
 
-        if(token){
+        if(!token){
             navigate('/meu-delivery')
         }
     }, [])
@@ -74,16 +73,10 @@ const Signup:FC = ()=>{
     }
 
 
-    
+
     return(
-        <>  
-            <Header
-                leftIcon={ <div/> }
-                center={ <h2 className="logo-title">REDE SOCIAL FAST-FOOD</h2> }
-                rightIcon={ <div/> }
-                />
-            <Container>
-                <div className="title">Cadastro</div>
+        <Container>
+            <div className="title">Atualizar Cadastro</div>
                 <form onSubmit={signup}>
                     <label htmlFor="name" className="sr-only">Nome</label>
                     <input
@@ -123,24 +116,6 @@ const Signup:FC = ()=>{
                         autoComplete="email"
                         aria-label="Endereço de email"
                         required/>
-                    <div className="input-icon-container">
-                        <label htmlFor="password" className="sr-only">Senha</label>
-                        <input
-                            type={showPass ? 'text' : 'password'}
-                            className="form-input input-exception"
-                            name="password"
-                            value={form.password}
-                            onChange={onChange} 
-                            placeholder="Sua senha"
-                            autoComplete="current-password"
-                            aria-label="Senha"
-                            required/>
-                    {
-                        !showPass ? (
-                            <FaEyeSlash onClick={()=> setShowPass(true)} className='eye-icon' />
-                        ) : <FaEye onClick={()=> setShowPass(false)} className='eye-icon' />
-                    }
-                    </div>
                     <div className="btn-container">
                         <div className="submit-btn">
                             <button className="signup-button" type="button" onClick={clearForm}>Limpar</button>
@@ -149,12 +124,12 @@ const Signup:FC = ()=>{
                         <button 
                             className="signup-button signup-button-exception"
                             type="button"
-                            onClick={()=> navigate('/meu-delivery/login')}>Voltar para login</button>
+                            onClick={()=> navigate('/meu-delivery/profile')}>Voltar para perfil</button>
                     </div>
                 </form>
-            </Container>
-        </>
+        </Container>
     )
 }
 
-export default Signup
+
+export  default EditProfile

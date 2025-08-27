@@ -1,10 +1,10 @@
-import { ChangeEvent, FC, useContext, useEffect } from "react"
+import { ChangeEvent, FC, useContext, useEffect, useState } from "react"
 import Context, { GlobalStateContext } from "../../global/Context"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { IoIosArrowBack } from "react-icons/io"
-import { IoPerson } from "react-icons/io5";
+import { IoPerson } from "react-icons/io5"
 import { MdEdit } from 'react-icons/md'
 import { Order } from "../../types/types"
 import { useNavigate } from "react-router-dom"
@@ -13,10 +13,6 @@ import { productsImages } from '../../constants/index'
 
 
 
-interface GroupedOrders{
-    orders:Order[]
-    total:number
-}
 
 
 const Cart:FC = ()=>{
@@ -30,15 +26,15 @@ const Cart:FC = ()=>{
     const local = user ? `${user.neighbourhood} - ${user.city}/${user.state}` : ''
     const referencia = user ? user.complement : ''
     const talkTo = user ? user.username.split(' ')[0] : ''
-    /* const calculateTotal = (cart:Order[]) =>
-        cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0) */
-    //const [total, setTotal] = useState<number>(calculateTotal(cart))
+    const calculateTotal = (cart:Order[]) =>
+        cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0)
+    const [total, setTotal] = useState<number>(calculateTotal(cart))
 
 
-
+console.log(cart)
     useEffect(()=>{
         if(!token){
-            navigate('/ifuture_react/')
+            navigate('/meu-delivery')
             return
         }
         getProfile()
@@ -46,13 +42,13 @@ const Cart:FC = ()=>{
     }, [])
 
 
-    /* useEffect(() => {        
+    useEffect(() => {        
         setTotal(cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0))
-    }, [cart]) */
+    }, [cart])
 
 
 
-    const groupedByRestaurants = ()=>{
+    /* const groupedByRestaurants = ()=>{
         return cart.reduce<Record<string, GroupedOrders>>((groups, item)=>{
             if(!groups[item.restaurant]){
                 groups[item.restaurant] = { orders: [], total: 0}
@@ -61,7 +57,7 @@ const Cart:FC = ()=>{
             groups[item.restaurant].total += Number(item.price) * Number(item.quantity)
             return groups
         }, {})
-    }
+    } */
     
 
     const handleNumber = (e:ChangeEvent<HTMLInputElement>, id:string)=>{
@@ -94,12 +90,12 @@ const Cart:FC = ()=>{
     }
 
 
-    const endOrders = (provider:string)=>{
+    const endOrders = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
 
-        axios.patch(`${BASE_URL}/finish_orders/${provider}`, null, headers)
+        axios.patch(`${BASE_URL}/finish_orders`, null, headers)
             .then(() =>{
                 getAllOrders()
                 setCart([])
@@ -115,21 +111,19 @@ const Cart:FC = ()=>{
     } */
     
     
-    const endRequests = (provider:string)=>{
-        const groups = groupedByRestaurants()
-        const group = groups[provider]
+    const endRequests = ()=>{
 
-        if(!group) return
+        if(cart.length === 0) return
 
-        const newMsg = group.orders.map(item =>
+        const newMsg = cart.map(item =>
             `${item.quantity} ${item.product} R$ ${Number(item.price).toFixed(2)}\nTotal R$ ${Number(item.price) * Number(item.quantity)}`
         ).join('\n')
-        const totalGroup = `Total Geral R$ ${Number(group.total).toFixed(2)}`
+        const totalGroup = `Total Geral R$ ${Number(total).toFixed(2)}`
         const mensagemUrl = `Novo pedido:\n\n${newMsg}\n\n${totalGroup}\n\nPara o endereço: ${address}\nCEP: ${cep}\nLocal: ${local}\n${referencia.trim()}\nFalar com: ${talkTo}`
         const url = `https://wa.me/5571984407882?text=${encodeURIComponent(mensagemUrl)}`
 
         window.open(url, '_blank')  
-        endOrders(provider)      
+        endOrders()      
     }
     
         
@@ -146,7 +140,7 @@ const Cart:FC = ()=>{
             center={ <div/> }
             rightIcon={
                 <IoPerson className="header-icon"
-                onClick={() => navigate('/ifuture_react/profile')} />
+                onClick={() => navigate('/meu-delivery/profile')} />
             }/>
         <Container>
             <h1>Meu Carrinho</h1>
@@ -160,7 +154,7 @@ const Cart:FC = ()=>{
                     <b>Falar com</b>: {talkTo}
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/ifuture_react/user-address')
+                    navigate('/meu-delivery/user-address')
                 }} />
             </div>
             {/* {!fullAddress && (
@@ -181,46 +175,45 @@ const Cart:FC = ()=>{
                 <div className="rest-name">Seus produtos</div>
             </div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
-            {cart.length > 0 ? Object.entries(groupedByRestaurants()).map(([restaurant, group])=>(
-                <div key={restaurant} className="card-container">
-                    {group.orders.map(item => (
-                        <div key={item.id} className="card">
-                            <span>
-                                <img src={productsImages[item.photoUrl]}  alt="Imagem do produto" />
-                            </span>
-                            <span>
-                                <div className="product-name">{item.product}</div>
-                                <div className="product-details">
-                                    <b>Quantidade: </b>{item.quantity} <br />
-                                    <b>Preço: </b>R$ {Number(item.price).toFixed(2)} <br />
-                                    <b>Total: </b>R$ {(Number(item.price) * Number(item.quantity)).toFixed(2)} <br />
-                                </div>
-                            </span>
-                            <div className="btn-container">
-                                <input 
-                                    type="number"
-                                    min={1} 
-                                    value={item.quantity}
-                                    onChange={(e) => handleNumber(e, item.id)}
-                                    className="input-number" />                 
-                                <button className="btn-remove" onClick={()=> removeItem(item)} >Remover</button> 
-                            </div>
+            {cart.length > 0 ? cart.map(item =>(
+                <div key={item.id} className="card">
+                    <span>
+                        <img src={productsImages[item.photoUrl]}  alt="Imagem do produto" />
+                    </span>
+                    <span>
+                        <div className="product-name">{item.product}</div>
+                        <div className="product-details">
+                            <b>Quantidade: </b>{item.quantity} <br />
+                            <b>Preço: </b>R$ {Number(item.price).toFixed(2)} <br />
+                            <b>Total: </b>R$ {(Number(item.price) * Number(item.quantity)).toFixed(2)} <br />
                         </div>
-                    ))}
-                    <div className="total-container">
-                        <div className="totalByGroup"><b>Total</b>: R$ {Number(group.total).toFixed(2)}</div>
-                        <hr style={{background:'lightgray', margin:'3px', width:'10%'}} />
-                        <button 
-                            className="requestOrder-btn"
-                            style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
-                            disabled={cart.length === 0 || !user}
-                            onClick={() => endRequests(restaurant)}>
-                            Finalizar Pedido
-                        </button>
-                        <hr style={{width:'20%', marginBottom:'15px', marginTop:'10px', background:'lightgray'}} />
-                    </div>
+                    </span>
+                    <div className="btn-container">
+                        <input 
+                            type="number"
+                            min={1} 
+                            value={item.quantity}
+                            onChange={(e) => handleNumber(e, item.id)}
+                            className="input-number" />                 
+                        <button className="btn-remove" onClick={()=> removeItem(item)} >Remover</button> 
+                    </div>                        
                 </div>
+                
             )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
+            {cart.length > 0 && (
+                <div className="total-container">
+                    <div className="totalByGroup"><b>Total</b>: R$ {Number(total).toFixed(2)}</div>
+                    <hr style={{background:'lightgray', margin:'3px', width:'10%'}} />
+                    <button 
+                        className="requestOrder-btn"
+                        style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
+                        disabled={cart.length === 0 || !user}
+                        onClick={() => endRequests()}>
+                        Finalizar Pedido
+                    </button>
+                    <hr style={{width:'20%', marginBottom:'15px', marginTop:'10px', background:'lightgray'}} />
+                </div>
+            )}
             {/* <div className="select-container">
                 <div className="total-price">Total da compra: R$ {Number(total).toFixed(2)}</div>
             </div>

@@ -74,7 +74,7 @@ const UserAddress:FC = ()=>{
         }
         
         axios.patch(`${BASE_URL}/user-address`, body, headers).then(()=>{
-            navigate('/ifuture_react/cart')
+            navigate('/meu-delivery/cart')
         }).catch(e=>{
             alert(e.response.data)
         })
