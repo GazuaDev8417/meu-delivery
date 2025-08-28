@@ -4,9 +4,8 @@ import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { IoIosArrowBack } from "react-icons/io"
 import { FaEyeSlash, FaEye } from 'react-icons/fa'
-import { /* Link, */ useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Container } from "./styled"
-//import Modal from "../../components/Modal"
 
 
 interface FormData{
@@ -18,7 +17,6 @@ interface FormData{
 const Login:FC = ()=>{
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState<boolean>(false)
-    //const [showModal, setShowModal] = useState<boolean>(false)
     const [form, setForm] = useState<FormData>({
         email:'visitante@email.com',
         password:'123456'
@@ -72,13 +70,12 @@ const Login:FC = ()=>{
                         className="header-icon"
                         onClick={()=> navigate('/meu-delivery/detail')} />
                 }
-                center={ <h2 className="logo-title">REDE SOCIAL FAST-FOOD</h2> }
+                center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
                 rightIcon={ <div/> }
                 />
             <Container>
                 
                 <div className="title">Login</div>
-                {/* { showModal && <Modal setShowModal={setShowModal}/> } */}
                 <form onSubmit={login}>               
                     <div className="input-icon-container">
                         <label htmlFor="login-email" className="sr-only">Email</label>
@@ -115,9 +112,9 @@ const Login:FC = ()=>{
                         <button className="login-button" type="submit">Entrar</button>
                     </div>
                 </form>
-                {/* <p>
-                    Não possui cadastro? clique <Link to='/ifuture_react/signup'> aqui</Link>
-                </p> */}
+                <p>
+                    Não possui cadastro? clique <Link to='/meu-delivery/signup'> aqui</Link>
+                </p>
             </Container>
         </>
     )

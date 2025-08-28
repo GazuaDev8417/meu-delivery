@@ -4,12 +4,13 @@ import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { IoIosArrowBack } from "react-icons/io"
-import { IoPerson } from "react-icons/io5"
+import { IoPersonOutline } from "react-icons/io5"
 import { MdEdit } from 'react-icons/md'
 import { Order } from "../../types/types"
 import { useNavigate } from "react-router-dom"
 import { Container } from "./styled"
 import { productsImages } from '../../constants/index'
+import MpModal from "../../components/MpModal"
 
 
 
@@ -29,9 +30,13 @@ const Cart:FC = ()=>{
     const calculateTotal = (cart:Order[]) =>
         cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0)
     const [total, setTotal] = useState<number>(calculateTotal(cart))
+    const [mpModalOpen, setMpModalOpen] = useState<boolean>(false)
+    const [mpUrl, setMpUrl] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
 
-console.log(cart)
+
+
     useEffect(()=>{
         if(!token){
             navigate('/meu-delivery')
@@ -45,19 +50,7 @@ console.log(cart)
     useEffect(() => {        
         setTotal(cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0))
     }, [cart])
-
-
-
-    /* const groupedByRestaurants = ()=>{
-        return cart.reduce<Record<string, GroupedOrders>>((groups, item)=>{
-            if(!groups[item.restaurant]){
-                groups[item.restaurant] = { orders: [], total: 0}
-            }
-            groups[item.restaurant].orders.push(item)
-            groups[item.restaurant].total += Number(item.price) * Number(item.quantity)
-            return groups
-        }, {})
-    } */
+    
     
 
     const handleNumber = (e:ChangeEvent<HTMLInputElement>, id:string)=>{
@@ -123,7 +116,24 @@ console.log(cart)
         const url = `https://wa.me/5571984407882?text=${encodeURIComponent(mensagemUrl)}`
 
         window.open(url, '_blank')  
-        endOrders()      
+        endOrders()  
+        setMpModalOpen(false)    
+    }
+
+
+    const orderPayment = async()=>{
+        setLoading(true)
+        const { data } = await axios.post('http://localhost:3003/payment_preferences', {
+            items: cart.map(item =>({
+                title: item.product,
+                quantity: item.quantity,
+                unit_price: Number(item.price)
+            }))
+        })
+        
+        setMpUrl(data.init_point)
+        setMpModalOpen(true)
+        setLoading(false)
     }
     
         
@@ -139,7 +149,7 @@ console.log(cart)
             }
             center={ <div/> }
             rightIcon={
-                <IoPerson className="header-icon"
+                <IoPersonOutline className="header-icon"
                 onClick={() => navigate('/meu-delivery/profile')} />
             }/>
         <Container>
@@ -157,20 +167,6 @@ console.log(cart)
                     navigate('/meu-delivery/user-address')
                 }} />
             </div>
-            {/* {!fullAddress && (
-                <div>
-                    Necessário efetuar login.<br />
-                    Clique no ícone do lápis para adicionar
-                </div>
-            )} */}
-            {/* {cart.length > 0 && (
-                <button 
-                    type="button"
-                    style={{padding:10, color:'white', marginTop:30, fontSize:'1rem'}}
-                    onClick={confirmClearOrders}>
-                    Limpar Lista
-                </button>
-            )} */}
             <div className="addressAndName">
                 <div className="rest-name">Seus produtos</div>
             </div>
@@ -200,6 +196,7 @@ console.log(cart)
                 </div>
                 
             )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
+            {mpModalOpen && <MpModal setModalOpen={setMpModalOpen} mpUrl={mpUrl} endRequests={endRequests} />}
             {cart.length > 0 && (
                 <div className="total-container">
                     <div className="totalByGroup"><b>Total</b>: R$ {Number(total).toFixed(2)}</div>
@@ -207,23 +204,13 @@ console.log(cart)
                     <button 
                         className="requestOrder-btn"
                         style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
-                        disabled={cart.length === 0 || !user}
-                        onClick={() => endRequests()}>
-                        Finalizar Pedido
+                        disabled={loading === true}
+                        onClick={orderPayment}>
+                        {loading ? 'Aguarde...' : 'Finalizar Pedido'}
                     </button>
                     <hr style={{width:'20%', marginBottom:'15px', marginTop:'10px', background:'lightgray'}} />
                 </div>
             )}
-            {/* <div className="select-container">
-                <div className="total-price">Total da compra: R$ {Number(total).toFixed(2)}</div>
-            </div>
-            <button 
-                className="requestOrder-btn"
-                style={{background: cart.length > 0 && fullAddress ? 'red' : 'gray'}}
-                disabled={cart.length === 0 || !fullAddress}
-                onClick={() => endRequests()}>
-                Finalizar Pedido
-            </button> */}
         </Container>
         </>
     )

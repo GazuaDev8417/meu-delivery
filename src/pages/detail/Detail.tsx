@@ -2,8 +2,7 @@ import { FC, useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
-import { FaCartShopping } from "react-icons/fa6"
-import { IoPerson } from "react-icons/io5"
+import { IoPersonOutline, IoCartOutline } from "react-icons/io5"
 import { Products, Restaurant } from "../../types/types"
 import { Container/* , Overlay, Sidebar */ } from './styled'
 import axios from "axios"
@@ -177,7 +176,7 @@ const Detail:FC = ()=>{
         <Header
             leftIcon={ 
                 token ? (
-                    <FaCartShopping className="header-icon" onClick={()=>{
+                    <IoCartOutline className="header-icon" onClick={()=>{
                         navigate('/meu-delivery/cart')
                     }}/>
                 ) : <div/>
@@ -185,7 +184,7 @@ const Detail:FC = ()=>{
             center={ <div/> }
             rightIcon={
                 token ? (
-                    <IoPerson className="header-icon" onClick={()=>{
+                    <IoPersonOutline className="header-icon" onClick={()=>{
                         navigate('/meu-delivery/profile')
                     }}/>
                 ) : <div/>

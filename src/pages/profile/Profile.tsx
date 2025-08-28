@@ -3,8 +3,8 @@ import Context, { GlobalStateContext } from '../../global/Context'
 import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { IoMdHome } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
+import { GoHome } from "react-icons/go"
+import { MdDelete } from "react-icons/md"
 import Header from "../../components/Header"
 import formatPhoneNumber from '../../utils/formatPhoneNumber'
 import { Container } from './styled'
@@ -109,7 +109,7 @@ const Profile = ()=>{
             }
             center={<div/>}
             leftIcon={
-                <IoMdHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
+                <GoHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
             }/>        
         <Container>    
             <h1>Perfil do usuário</h1>            

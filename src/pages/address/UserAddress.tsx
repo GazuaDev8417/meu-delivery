@@ -214,7 +214,9 @@ const UserAddress:FC = ()=>{
                     required/>
                 <div className="btn-container">
                     <button className="address-button" type="button" onClick={clearForm}>Limpar</button>
-                    <button className="address-button" type="submit">Registrar</button>
+                    <button className="address-button" type="submit">
+                        {mode === 'create' ? 'Registrar' : 'Atualizar'}
+                    </button>
                 </div>
             </form>
         </Container>

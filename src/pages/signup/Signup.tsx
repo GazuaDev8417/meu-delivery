@@ -79,11 +79,11 @@ const Signup:FC = ()=>{
         <>  
             <Header
                 leftIcon={ <div/> }
-                center={ <h2 className="logo-title">REDE SOCIAL FAST-FOOD</h2> }
+                center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
                 rightIcon={ <div/> }
                 />
             <Container>
-                <div className="title">Cadastro</div>
+                <div className="title">Cadastro de Cliente</div>
                 <form onSubmit={signup}>
                     <label htmlFor="name" className="sr-only">Nome</label>
                     <input
