@@ -122,8 +122,27 @@ const Cart:FC = ()=>{
 
 
     const orderPayment = async()=>{
+        if(window.innerWidth < 768){
+            endRequests()
+            /* const newTab = window.open('', '_blank')
+            try{
+                const { data } = await axios.post('http://localhost:3003/payment_preferences', {
+                items: cart.map(item =>({
+                    title: item.product,
+                    quantity: item.quantity,
+                    unit_price: Number(item.price)
+                }))
+            })
+            if(newTab) newTab.location.href = data.init_point
+            }catch(e){
+                newTab?.close()
+                console.error(e)
+            } */
+            return
+        }
         setLoading(true)
-        const { data } = await axios.post('http://localhost:3003/payment_preferences', {
+        try{
+            const { data } = await axios.post('http://localhost:3003/payment_preferences', {
             items: cart.map(item =>({
                 title: item.product,
                 quantity: item.quantity,
@@ -133,11 +152,13 @@ const Cart:FC = ()=>{
         
         setMpUrl(data.init_point)
         setMpModalOpen(true)
+        }catch(e){
+            console.error(e)
+        }
         setLoading(false)
     }
     
-        
-
+    
 
     return(
         <>

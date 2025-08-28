@@ -81,7 +81,7 @@ export const Container = styled.div`
         /* width: 150px;
         height: 150px; */
         border-radius: 10px;  
-        box-shadow: 2px 2px 4px;
+        /* box-shadow: 2px 2px 4px; */
     }
 
     /* .select-container{
@@ -162,7 +162,7 @@ export const Container = styled.div`
         }
 
         .card img{
-            width: 65vw;      
+            width: 30vw;      
         }
 
         .total-price{

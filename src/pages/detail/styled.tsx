@@ -122,7 +122,7 @@ export const Container = styled.div`
         /* width: 100px;
         height: 130px; */	
         border-radius: 10px;
-        box-shadow: 2px 2px 4px;
+        /* box-shadow: 2px 2px 4px; */
     }
 
     .select-btn-container{
@@ -166,7 +166,7 @@ export const Container = styled.div`
         }
 
         .product-image{
-            width: 100%;
+            width: 30%;
         }
 
         .select-btn-container{
@@ -185,6 +185,10 @@ export const Container = styled.div`
         .image{
             height: 80%;
         }
+    }
+
+    @media(max-width: 375px){
+        
     }
 
 `

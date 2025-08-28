@@ -20,6 +20,7 @@ const libraries:Libraries = ['places']
 
 
 const Detail:FC = ()=>{
+    console.log('Largura', window.innerWidth)
     const navigate = useNavigate()
     const { getAllOrders } = useContext(Context) as GlobalStateContext
     const selectedOrderId = localStorage.getItem('selectedOrderId')
