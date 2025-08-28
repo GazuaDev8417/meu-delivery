@@ -57,7 +57,7 @@ const Signup:FC = ()=>{
         
         axios.post(`${BASE_URL}/signup`, body).then(res=>{
             localStorage.setItem('token',res.data)
-            navigate('/meu-delivery/user-address')
+            navigate('/meu-delivery/user-address', { state: { mode: 'create' } })
         }).catch(e=>{
             alert(e.response.data)
         })

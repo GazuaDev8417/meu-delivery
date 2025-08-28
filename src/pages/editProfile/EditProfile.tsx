@@ -12,19 +12,16 @@ interface FormData{
     username:string
     email:string
     phone:string
-    password:string
 }
 
 
 
 const EditProfile:FC = ()=>{
     const navigate = useNavigate()
-    const [showPass, setShowPass] = useState<boolean>(false)
     const [form, setForm] = useState<FormData>({
         username:'',
         email:'',
-        phone: '',
-        password:''
+        phone: ''
     })
 
 
@@ -44,19 +41,20 @@ const EditProfile:FC = ()=>{
         setForm({ ...form, [name]: updatedValue })
     }
 
-    const signup = (e:FormEvent<HTMLFormElement>):void=>{
+    const updateUser = (e:FormEvent<HTMLFormElement>):void=>{
         e.preventDefault()
 
         const body = {
-            name: form.username,
+            username: form.username,
             email: form.email,
-            phone: form.phone.replace(/\D/g, ''),
-            password: form.password
+            phone: form.phone.replace(/\D/g, '')
+        }
+        const headers = {
+            headers: { Authorization: localStorage.getItem('token') }
         }
         
-        axios.post(`${BASE_URL}/signup`, body).then(res=>{
-            localStorage.setItem('token',res.data)
-            navigate('/meu-delivery/user-address')
+        axios.patch(`${BASE_URL}/user`, body, headers).then(()=>{
+            navigate('/meu-delivery/profile')
         }).catch(e=>{
             alert(e.response.data)
         })
@@ -67,8 +65,7 @@ const EditProfile:FC = ()=>{
         setForm({
             username:'',
             email:'',
-            phone:'',
-            password:''
+            phone:''
         })
     }
 
@@ -77,7 +74,7 @@ const EditProfile:FC = ()=>{
     return(
         <Container>
             <div className="title">Atualizar Cadastro</div>
-                <form onSubmit={signup}>
+                <form onSubmit={updateUser}>
                     <label htmlFor="name" className="sr-only">Nome</label>
                     <input
                         id="name"
@@ -119,7 +116,7 @@ const EditProfile:FC = ()=>{
                     <div className="btn-container">
                         <div className="submit-btn">
                             <button className="signup-button" type="button" onClick={clearForm}>Limpar</button>
-                            <button className="signup-button" type="submit">Registrar</button>
+                            <button className="signup-button" type="submit">Atualizar</button>
                         </div>
                         <button 
                             className="signup-button signup-button-exception"

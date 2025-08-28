@@ -133,7 +133,7 @@ const Profile = ()=>{
                     </div>
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/meu-delivery/user-address')
+                    navigate('/meu-delivery/user-address', { state: { mode: 'update' } })
                 }}/>
             </div>
             <div className="addressAndName">

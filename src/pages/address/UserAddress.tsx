@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, FormEvent, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { ChangeEvent, FC, FormEvent, useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import { Container } from "./styled"
@@ -21,6 +21,9 @@ interface FormData{
 
 const UserAddress:FC = ()=>{
     const navigate = useNavigate()
+    const location = useLocation()
+    const mode = location.state?.mode || 'create'
+    const token = localStorage.getItem('token')
     const [form, setForm] = useState<FormData>({
         street:'',
         cep:'',
@@ -30,6 +33,24 @@ const UserAddress:FC = ()=>{
         state:'',
         complement:''
     })
+
+
+
+    useEffect(()=>{
+        if(!token) return
+
+        axios.get(`${BASE_URL}/address`, {
+            headers: { Authorization: token }
+        }).then(res =>{
+            if(res.data){
+                setForm(prev=>({
+                    ...prev,
+                    ...res.data
+                }))
+            }
+        })
+        .catch(e => console.error(e.response.data))        
+    }, [])
     
     
 
@@ -74,7 +95,7 @@ const UserAddress:FC = ()=>{
         }
         
         axios.patch(`${BASE_URL}/user-address`, body, headers).then(()=>{
-            navigate('/meu-delivery/cart')
+            navigate(mode === 'create' ? '/meu-delivery' : '/meu-delivery/profile')
         }).catch(e=>{
             alert(e.response.data)
         })
@@ -102,7 +123,7 @@ const UserAddress:FC = ()=>{
                     navigate(-1)
                 }} 
                 className='icon'/>
-            <div className="title">{'Adicionar endereço'}</div>
+            <div className="title">{mode === 'create' ? 'Adicionar endereço' : 'Atualizar Endereço'}</div>
             <form onSubmit={registAddress}>
                 <label htmlFor="address" className="sr-only">Endereço</label>
                 <input
