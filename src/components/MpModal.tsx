@@ -1,4 +1,9 @@
-import { FC } from "react"
+import { FC, useState, Dispatch, SetStateAction } from "react"
+import axios from "axios"
+import { BASE_URL } from "../constants/url"
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { initMercadoPago, CardPayment } from "@mercadopago/sdk-react"
+
 
 import styled from "styled-components"
 
@@ -21,40 +26,72 @@ const Container = styled.div`
         position: relative;
     }
 
-    .iframe-style{
-        width: 100%;
-        height: 100%;
-        border: none;
+    .icon{
+        position: absolute;
+        right: 5%;
+        top: 2%;
+        z-index: 10;
     }
 
     .btn{
         position: absolute;
         background-color: green;
-        top: 1%;
+        bottom: -3%;
         left: 50%;
         transform: translateX(-50%);
     }
 `
 
 type MpModalProps = {
-    mpUrl:string
     setModalOpen: (open:boolean) => void
     endRequests: () => void
+    setQrCode:Dispatch<SetStateAction<string | null>>
 }
 
+initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
 
-const MpModal:FC<MpModalProps> = ({ setModalOpen, mpUrl, endRequests })=>{
+const MpModal:FC<MpModalProps> = ({ setModalOpen, endRequests, setQrCode })=>{
+    const [status, setStatus] = useState<string>('')
+
+
+
+    const confirm_endRequests = ()=>{
+        const decide = window.confirm('Aqui você apensas notifica o seu pedido para o vendedor, para realizar o pagamento é preciso preencher os dados do cartão e confirmar.')
+        if(decide){
+            endRequests()
+        } 
+    }
+
+
+    const handleSubmit = async(formData:any)=>{
+        try{
+        const res = await axios.post(`${BASE_URL}/pay`, {
+            token: formData.token,
+            paymentMethodId: formData.paymentMethodId,
+            email: formData.cardholderEmail
+        })
+
+        setStatus(res.data.status)
+        setQrCode(null)
+        }catch(e){
+        console.error(e)
+        setStatus('Erro')
+        }
+    }
+
+
+
     return(
         <Container onClick={() => setModalOpen(false)}>
-            <div
-                onClick={e => e.stopPropagation()} 
-                className="iframe-container">
-                <iframe src={mpUrl} className="iframe-style" />
-                <button
-                    className="btn"
-                    onClick={endRequests}>
-                        Notificar pedido pelo whatsapp
-                    </button>
+            <div onClick={e => e.stopPropagation()} className="iframe-container">
+                <IoIosCloseCircleOutline className="icon" size={25} onClick={() => setModalOpen(false)} />
+                <CardPayment
+                    onSubmit={handleSubmit}
+                    initialization={{
+                        amount: 100
+                    }}/>
+                <button className="btn" onClick={confirm_endRequests}>Notificar via Whatsapp</button>
+                {status && <p style={{marginTop:'2rem'}}>Status: {status}</p>}
             </div>
         </Container>
     )

@@ -20,7 +20,6 @@ const libraries:Libraries = ['places']
 
 
 const Detail:FC = ()=>{
-    console.log('Largura', window.innerWidth)
     const navigate = useNavigate()
     const { getAllOrders } = useContext(Context) as GlobalStateContext
     const selectedOrderId = localStorage.getItem('selectedOrderId')
@@ -163,15 +162,9 @@ const Detail:FC = ()=>{
         })
     }
 
+    
 
-    /* const  formatName = (name:string)=>{
-        return name
-            .replace(/sua/, 'Sua ')
-            .trim()
-            .replace(/\b\w/g, c => c.toLocaleUpperCase())
-    } */
-
-    console.log(products)
+    
     return(
         <>
         <Header

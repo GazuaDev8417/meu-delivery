@@ -11,10 +11,12 @@ import { useNavigate } from "react-router-dom"
 import { Container } from "./styled"
 import { productsImages } from '../../constants/index'
 import MpModal from "../../components/MpModal"
+import { initMercadoPago } from "@mercadopago/sdk-react"
 
 
 
 
+initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
 
 const Cart:FC = ()=>{
     const navigate = useNavigate()
@@ -22,17 +24,24 @@ const Cart:FC = ()=>{
         cart, setCart, getAllOrders, getProfile, user
     } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
+    /* ENDEREÇO DO CLIENTE */
     const address = user ? user.street : ''
     const cep = user ? user.cep : ''
     const local = user ? `${user.neighbourhood} - ${user.city}/${user.state}` : ''
     const referencia = user ? user.complement : ''
     const talkTo = user ? user.username.split(' ')[0] : ''
+    /* TOTAL DO CARRINHO */
     const calculateTotal = (cart:Order[]) =>
         cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0)
     const [total, setTotal] = useState<number>(calculateTotal(cart))
+    /* MODAL */
     const [mpModalOpen, setMpModalOpen] = useState<boolean>(false)
-    const [mpUrl, setMpUrl] = useState<string>('')
-    const [loading, setLoading] = useState<boolean>(false)
+    /* ORDERM DE PAGAMENTO */
+    const [status, setStatus] = useState<string>('')
+    const [qrCode, setQrCode] = useState<string | null>(null)
+    const [qrCodeBase64, setQrCodeBase64] = useState<string | null>(null)
+    const [qrCodeLink, setQrCodeLink] = useState<string | null>(null)
+    const [method, setMethod] = useState<'pix' | 'boleto' | 'card' | null>(null)
 
 
 
@@ -121,42 +130,22 @@ const Cart:FC = ()=>{
     }
 
 
-    const orderPayment = async()=>{
-        if(window.innerWidth < 768){
-            endRequests()
-            /* const newTab = window.open('', '_blank')
-            try{
-                const { data } = await axios.post('http://localhost:3003/payment_preferences', {
-                items: cart.map(item =>({
-                    title: item.product,
-                    quantity: item.quantity,
-                    unit_price: Number(item.price)
-                }))
-            })
-            if(newTab) newTab.location.href = data.init_point
-            }catch(e){
-                newTab?.close()
-                console.error(e)
-            } */
-            return
-        }
-        setLoading(true)
-        try{
-            const { data } = await axios.post('http://localhost:3003/payment_preferences', {
-            items: cart.map(item =>({
+    const handlePix = async()=>{
+        const res = await axios.post(`${BASE_URL}/pay`, {
+            paymentMethodId: 'pix',
+            email: user.email,
+            items: cart.map(item => ({
                 title: item.product,
                 quantity: item.quantity,
                 unit_price: Number(item.price)
             }))
         })
-        
-        setMpUrl(data.init_point)
-        setMpModalOpen(true)
-        }catch(e){
-            console.error(e)
-        }
-        setLoading(false)
+        setStatus(res.data.status)
+        setQrCode(res.data.qr_code || null)
+        setQrCodeBase64(res.data.qr_code_base64 || null)
+        setQrCodeLink(res.data.qr_code_link || null)
     }
+
     
     
 
@@ -217,19 +206,58 @@ const Cart:FC = ()=>{
                 </div>
                 
             )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
-            {mpModalOpen && <MpModal setModalOpen={setMpModalOpen} mpUrl={mpUrl} endRequests={endRequests} />}
+            {mpModalOpen && method === 'card' && <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} endRequests={endRequests} />}
             {cart.length > 0 && (
                 <div className="total-container">
                     <div className="totalByGroup"><b>Total</b>: R$ {Number(total).toFixed(2)}</div>
                     <hr style={{background:'lightgray', margin:'3px', width:'10%'}} />
-                    <button 
+                    {/* <button 
                         className="requestOrder-btn"
                         style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
                         disabled={loading === true}
                         onClick={orderPayment}>
                         {loading ? 'Aguarde...' : 'Finalizar Pedido'}
-                    </button>
+                    </button> */}
+                    <div style={{display:'flex', gap:'1rem'}}>
+                        <button onClick={() =>{
+                            setMethod('pix') 
+                            handlePix()
+                        }} >Pix</button>
+
+                        <button onClick={() =>{
+                            setMethod('card')
+                            setMpModalOpen(true)
+                        }} >Cartão</button>
+                    </div>
                     <hr style={{width:'20%', marginBottom:'15px', marginTop:'10px', background:'lightgray'}} />
+
+                    {/* QRCODE E PIX */}
+                    {method === 'pix' && (qrCode || qrCodeBase64 || qrCodeLink) && (
+                        <div style={{marginTop:'1.5rem'}}>
+                            <p>Escaneie o QR Code para pagar:</p>
+                            {qrCodeBase64 ? (
+                                <img
+                                width='200'
+                                src={`data:image/png;base64,${qrCodeBase64}`}
+                                alt="QR Code Pix"
+                                />
+                            ) : qrCode ? (
+                                <img
+                                width='200'
+                                src={`https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(qrCode!)}`}
+                                alt="QR Code Pix"
+                                />
+                            ) : null}
+                            {qrCodeLink && (
+                                <p>
+                                <a href={qrCodeLink} target="_blank" rel="noopener noreferrer">
+                                    Clique aqui para pagar com Pix
+                                </a>
+                                </p>
+                            )}
+                            {status && <p style={{marginTop:'2rem'}}>Status: {status}</p>}
+                        </div>
+                    )}                                 
                 </div>
             )}
         </Container>
