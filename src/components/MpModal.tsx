@@ -44,23 +44,14 @@ const Container = styled.div`
 
 type MpModalProps = {
     setModalOpen: (open:boolean) => void
-    endRequests: () => void
     setQrCode:Dispatch<SetStateAction<string | null>>
 }
 
 initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
 
-const MpModal:FC<MpModalProps> = ({ setModalOpen, endRequests, setQrCode })=>{
+const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode })=>{
     const [status, setStatus] = useState<string>('')
-
-
-
-    const confirm_endRequests = ()=>{
-        const decide = window.confirm('Aqui você apensas notifica o seu pedido para o vendedor, para realizar o pagamento é preciso preencher os dados do cartão e confirmar.')
-        if(decide){
-            endRequests()
-        } 
-    }
+    
 
 
     const handleSubmit = async(formData:any)=>{
@@ -73,10 +64,25 @@ const MpModal:FC<MpModalProps> = ({ setModalOpen, endRequests, setQrCode })=>{
 
         setStatus(res.data.status)
         setQrCode(null)
+
+        const orderId = res.data.orderId;
+
+        // inicia polling
+        const interval = setInterval(async () => {
+            const statusRes = await axios.get(`${BASE_URL}/payments/status/${orderId}`);
+            if (statusRes.data.status !== status) {
+                setStatus(statusRes.data.status);
+
+                if (statusRes.data.status === 'approved') {
+                    clearInterval(interval);
+                    alert('Pagamento com cartão aprovado! 🎉');
+                }
+            }
+        }, 5000)
         }catch(e){
         console.error(e)
         setStatus('Erro')
-        }
+        }        
     }
 
 
@@ -84,13 +90,12 @@ const MpModal:FC<MpModalProps> = ({ setModalOpen, endRequests, setQrCode })=>{
     return(
         <Container onClick={() => setModalOpen(false)}>
             <div onClick={e => e.stopPropagation()} className="iframe-container">
-                <IoIosCloseCircleOutline className="icon" size={25} onClick={() => setModalOpen(false)} />
+                {window.innerWidth < 768 && <IoIosCloseCircleOutline className="icon" size={25} onClick={() => setModalOpen(false)} />}
                 <CardPayment
                     onSubmit={handleSubmit}
                     initialization={{
                         amount: 100
                     }}/>
-                <button className="btn" onClick={confirm_endRequests}>Notificar via Whatsapp</button>
                 {status && <p style={{marginTop:'2rem'}}>Status: {status}</p>}
             </div>
         </Container>

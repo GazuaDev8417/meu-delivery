@@ -45,8 +45,10 @@ export const Container = styled.div`
         margin: 2vh 0;
     }
 
-    .card-container{
-        width: 100%;
+    .cart-container{
+        width: 120%;
+        max-height: 180px;
+        overflow-y: auto;
     }
 
     .card{
@@ -109,10 +111,12 @@ export const Container = styled.div`
     .total-container{
         display: flex;
         align-items: center;
-        flex-direction: column;
+        flex-direction: column;;
     }
 
     .requestOrder-btn{
+        margin-top: 1rem;
+        background: green !important;
         font-size: 1rem;
         font-weight: bold;
         color: #fff;

@@ -40,9 +40,6 @@ const Profile = ()=>{
         }        
     }, [])
 
-    
-
-
 
 
     const orderHistory = ()=>{

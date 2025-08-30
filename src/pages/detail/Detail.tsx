@@ -1,10 +1,10 @@
-import { FC, useContext, useEffect, useRef, useState } from "react"
+import { ChangeEvent, FC, useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
 import { IoPersonOutline, IoCartOutline } from "react-icons/io5"
 import { Products, Restaurant } from "../../types/types"
-import { Container/* , Overlay, Sidebar */ } from './styled'
+import { Container } from './styled'
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import { useLoadScript, Libraries } from "@react-google-maps/api"
@@ -17,6 +17,78 @@ import { productsImages } from '../../constants/index'
 
 type Places = google.maps.places.PlaceResult
 const libraries:Libraries = ['places']
+
+type GroupedProducts = {
+  category: string
+  items: Products[]
+}
+
+interface ModalProps{
+    isVisible:boolean
+    onClose: () => void
+    product:Products
+    request: (product:Products) => void
+}
+
+
+const Modal:FC<ModalProps> = ({ isVisible, onClose, request, product }) =>{
+    if(!isVisible) return null
+    const [selectedOption, setSelectedOption] = useState<string>('unidade')
+
+    const hangleOptionChange = (e:ChangeEvent<HTMLInputElement>)=>{
+        setSelectedOption(e.target.value)
+    }
+
+    
+    return(
+        <div
+            style={{
+                position:'fixed',
+                inset:0,
+                background:'rgba(0, 0, 0, .7)',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                zIndex:1000}}
+            onClick={onClose}>
+            <div style={{
+                background:'white', 
+                padding:20,
+                borderRadius:10
+                }} onClick={e => e.stopPropagation()} >
+                <h3>Selecione uma opção:</h3>
+                <label htmlFor="unit" style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <input 
+                        type="radio" 
+                        name="options" 
+                        id="unit" 
+                        value="unidade" 
+                        checked={selectedOption === 'unidade'}
+                        onChange={hangleOptionChange} />
+                        Unidade
+                </label>
+                <label htmlFor="caixa" style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <input 
+                        type="radio" 
+                        name="options" 
+                        id="caixa" 
+                        value="caixa" 
+                        checked={selectedOption === 'caixa'}
+                        onChange={hangleOptionChange} />
+                        Caixa
+                </label>
+                <div style={{display:'flex', justifyContent:'center'}}>
+                    <button 
+                        style={{padding:5, width:100}}
+                        onClick={() => request(product)}>
+                        Pedir
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 
 
 const Detail:FC = ()=>{
@@ -36,8 +108,17 @@ const Detail:FC = ()=>{
         logourl:''
     })
     const [places, setPlaces] = useState<Places[]>([])
-    //const [isActive, setIsActive] = useState<boolean>(false)
     const [products, setProducts] = useState<Products[]>([])
+    const [openCategory, setOpenCategory] = useState<string | null>(null)
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [selectedProduct, setSelectedProduct] = useState<Products>({
+        category:'',
+        description:'',
+        id:'',
+        name:'',
+        photoUrl:'',
+        price:0
+    })
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY as string,
         libraries
@@ -105,9 +186,24 @@ const Detail:FC = ()=>{
     }, [isLoaded, restaurant?.name])
 
 
+    const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
+        const grouped = products.reduce((acc, product)=>{
+            if(!acc[product.category]){
+                acc[product.category] = { category: product.category, items: []}
+            }
+            acc[product.category].items.push(product)
+            return acc
+        }, {} as Record<string, GroupedProducts>)
+
+        return Object.values(grouped)
+    }
+
+
     const getProducts = ()=>{
         axios.get(`${BASE_URL}/restaurant_products`)
-            .then(res => setProducts(res.data))
+            .then(res =>{
+                setProducts(res.data)
+            })
             .catch(e => console.error(e.response.data))
     }
 
@@ -119,20 +215,10 @@ const Detail:FC = ()=>{
                 getProducts()
             })
             .catch(e => console.error(e.response.data))
-    }   
+    }  
 
 
-    
-    
-    const request = (product: Products)=>{
-        if(!token){
-            const decide = window.confirm('Necessário efetuar login para fazer pedidos')
-            if(decide){
-                navigate('/meu-delivery/login')
-            }
-            return
-        }
-        
+    const handleFinalRequest = (product:Products)=>{
         const now = new Date().toISOString()
         const headers = {
             headers: { Authorization: localStorage.getItem('token')}
@@ -160,7 +246,28 @@ const Detail:FC = ()=>{
                 navigate('/meu-delivery/cart')
             }
         })
+    }    
+
+    const request = (product: Products)=>{
+        console.log('Verificando a chamada', product)
+        if(!token){
+            const decide = window.confirm('Necessário efetuar login para fazer pedidos')
+            if(decide){
+                navigate('/meu-delivery/login')
+            }
+            return
+        }
+
+        if(product.category === 'Cerveja'){
+            setModalVisible(true)
+            setSelectedProduct(product)
+            return
+        }
+        handleFinalRequest(product)        
     }
+
+
+    const groupedProducts = groupedByCategory(products)
 
     
 
@@ -184,20 +291,8 @@ const Detail:FC = ()=>{
                 ) : <div/>
             }/>
         <Container>
-            {/* <Overlay className={isActive ? 'active' : ''} onClick={() => setIsActive(false)}/>
-            <Sidebar className={isActive ? 'active' : ''}>
-                <h3>{restaurant.name}</h3>
-                <ul>
-                    {token && (
-                        <li onClick={() => navigate('/meu-delivery/cart')}>
-                            Carrinho
-                        </li>
-                    )}
-                </ul>
-            </Sidebar> */}
             <div className="card">
                 <div className="rest-name">{restaurant.name}</div>
-                <p>{restaurant.address}</p>
                 <img 
                     src={`imgs/restaurants/${restaurant.logourl}`}
                     alt="Imagem do restaurante"
@@ -207,7 +302,7 @@ const Detail:FC = ()=>{
                         {restaurant.description}
                     </p>
                     <h3 style={{textAlign:'center', marginTop:'20px', marginBottom:'10px'}}>
-                        {restaurant.name} perto de você
+                        {/* {restaurant.name} perto de você */}
                     </h3>
                     <div>
                         {places.length > 0 ? (
@@ -217,36 +312,60 @@ const Detail:FC = ()=>{
                                     {place.vicinity}
                                 </div>
                             ))
-                        ) : <div>Não há {restaurant.name} em suas proximidades</div> }
+                        ) : <div>{/* Não há {restaurant.name} em suas proximidades */}</div> }
                     </div>                    
                 </div>
                 <div className="products">Menu Principal</div>
+                {/* Barra fixa de categorias */}
+                <div className="categories-bar">
+                    {groupedProducts.map(group => (
+                    <h3 
+                        key={group.category} 
+                        onClick={() => setOpenCategory(group.category)}
+                        style={{
+                            color: openCategory === group.category ? "red" : "black"}}>
+                        {group.category}
+                    </h3>
+                    ))}
+                </div>
+                {/* Renderizar somente a categoria aberta */}
                 <div className="products-container">
-                    {products && products.map(product=>(
-                        <div 
-                            className="products-card"
-                            key={product.id}
-                            ref={el =>{
-                                ordersRef.current[product.id] = el
-                            }}>
-                            <img
-                                className="product-image" 
-                                src={productsImages[product.photoUrl]}
-                                alt="Foto do produto" />
-                            <div className="product-desc">
-                                <h4>{product.name}</h4><br/>
-                                {product.description}<br/><br/>
-                                <div>R$ {Number(product.price).toFixed(2)}</div>
+                    {groupedProducts.map(group => (
+                        openCategory === group.category && (
+                            <div key={group.category}>
+                            {group.items.map(product => (
+                                <div 
+                                    className="products-card"
+                                    key={product.id}
+                                    ref={el => {
+                                        ordersRef.current[product.id] = el
+                                    }}>
+                                    <img
+                                        className="product-image" 
+                                        src={productsImages[product.photoUrl]}
+                                        alt="Foto do produto"/>
+                                    <div className="product-desc">
+                                        <h4>{product.name}</h4><br/>
+                                        {product.description}<br/><br/>
+                                        <div>R$ {Number(product.price).toFixed(2)}</div>
+                                    </div>
+                                    <button 
+                                        className="request-button"
+                                        onClick={() => request(product)}>
+                                        Pedir
+                                    </button>                                    
+                                </div>
+                            ))}
                             </div>
-                                <button 
-                                    className="request-button"
-                                    onClick={()=> request(product)}>
-                                    Pedir
-                                </button>
-                        </div>
+                        )
                     ))}
                 </div>
             </div>
+            <Modal 
+                isVisible={modalVisible} 
+                product={selectedProduct}
+                request={handleFinalRequest}
+                onClose={() => setModalVisible(false)} /> 
         </Container>
         </>
     )

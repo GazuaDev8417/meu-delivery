@@ -27,7 +27,7 @@ const Cart:FC = ()=>{
     /* ENDEREÇO DO CLIENTE */
     const address = user ? user.street : ''
     const cep = user ? user.cep : ''
-    const local = user ? `${user.neighbourhood} - ${user.city}/${user.state}` : ''
+    const local = user.neighbourhood ? `${user.neighbourhood} - ${user.city}/${user.state}` : ''
     const referencia = user ? user.complement : ''
     const talkTo = user ? user.username.split(' ')[0] : ''
     /* TOTAL DO CARRINHO */
@@ -79,31 +79,34 @@ const Cart:FC = ()=>{
     }
     
 
-    const removeItem = (cartItem:Order)=>{
+    const removeItem = (id:string)=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
 
-        axios.delete(`${BASE_URL}/order/${cartItem.id}`, headers).then(
-            () => getAllOrders()
+        axios.delete(`${BASE_URL}/order/${id}`, headers).then(() =>{
+            setCart(prevOrders => prevOrders.filter(order => order.id !== id))
+            getAllOrders()
+        } 
         ).catch(e=>{
             alert(e.response.data)
         })
     }
 
 
-    const endOrders = ()=>{
+    /* const endOrders = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
+        const body = { paymentMethod: method }
 
-        axios.patch(`${BASE_URL}/finish_orders`, null, headers)
+        axios.patch(`${BASE_URL}/finish_orders`, body, headers)
             .then(() =>{
                 getAllOrders()
                 setCart([])
             }
         ).catch(e => console.error(e.response.data))
-    }
+    } */
 
     /* const confirmClearOrders = ()=>{    
         const decide = window.confirm('Tem certeza que deseja deletar sua lista de pedidos?')
@@ -122,11 +125,15 @@ const Cart:FC = ()=>{
         ).join('\n')
         const totalGroup = `Total Geral R$ ${Number(total).toFixed(2)}`
         const mensagemUrl = `Novo pedido:\n\n${newMsg}\n\n${totalGroup}\n\nPara o endereço: ${address}\nCEP: ${cep}\nLocal: ${local}\n${referencia.trim()}\nFalar com: ${talkTo}`
-        const url = `https://wa.me/5571984407882?text=${encodeURIComponent(mensagemUrl)}`
+        const url = `https://wa.me/557182354215?text=${encodeURIComponent(mensagemUrl)}`
 
         window.open(url, '_blank')  
-        endOrders()  
-        setMpModalOpen(false)    
+        //endOrders()     
+    }
+
+    const confirmEndRequest = ()=>{
+        const decide = window.confirm('Aqui você apenas notifica o vendedor sobre seu pedido, mas não efetua o pagamento.')
+        if(decide) endRequests()
     }
 
 
@@ -144,6 +151,20 @@ const Cart:FC = ()=>{
         setQrCode(res.data.qr_code || null)
         setQrCodeBase64(res.data.qr_code_base64 || null)
         setQrCodeLink(res.data.qr_code_link || null)
+
+        const orderId = res.data.orderId
+
+        const interval = setInterval(async () => {
+            const statusRes = await axios.get(`${BASE_URL}/payments/status/${orderId}`);
+            if (statusRes.data.status !== status) {
+                setStatus(statusRes.data.status);
+
+                if (statusRes.data.status === 'approved') {
+                    clearInterval(interval);
+                    alert('Pagamento com cartão aprovado! 🎉');
+                }
+            }
+        }, 5000)
     }
 
     
@@ -167,20 +188,21 @@ const Cart:FC = ()=>{
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             <div className="address-section">
                 <div>
-                    <b>Endereço</b>: {address} {user.number ? user.number : 'S/N'}<br />
+                    <b>Endereço</b>: {address ? (user.number ? user.number : 'S/N') : ''}<br />
                     <b>CEP</b>: {cep}<br />
                     <b>Local</b>: {local}<br />
                     <b>Ponto de referência</b>: {referencia} <br />
                     <b>Falar com</b>: {talkTo}
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/meu-delivery/user-address')
+                    navigate('/meu-delivery/user-address', { state: { mode: 'update' }})
                 }} />
             </div>
             <div className="addressAndName">
                 <div className="rest-name">Seus produtos</div>
             </div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
+            {/* CARD DOS PRODUTOS NO CARRINHO */}
             {cart.length > 0 ? cart.map(item =>(
                 <div key={item.id} className="card">
                     <span>
@@ -201,23 +223,17 @@ const Cart:FC = ()=>{
                             value={item.quantity}
                             onChange={(e) => handleNumber(e, item.id)}
                             className="input-number" />                 
-                        <button className="btn-remove" onClick={()=> removeItem(item)} >Remover</button> 
+                        <button className="btn-remove" onClick={()=> removeItem(item.id)} >Remover</button> 
                     </div>                        
                 </div>
                 
             )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
-            {mpModalOpen && method === 'card' && <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} endRequests={endRequests} />}
+            {/* MEIOS DE PAGAMENTO */}
+            {mpModalOpen && method === 'card' && <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} />}
             {cart.length > 0 && (
                 <div className="total-container">
                     <div className="totalByGroup"><b>Total</b>: R$ {Number(total).toFixed(2)}</div>
-                    <hr style={{background:'lightgray', margin:'3px', width:'10%'}} />
-                    {/* <button 
-                        className="requestOrder-btn"
-                        style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
-                        disabled={loading === true}
-                        onClick={orderPayment}>
-                        {loading ? 'Aguarde...' : 'Finalizar Pedido'}
-                    </button> */}
+                    <hr style={{background:'lightgray', margin:'3px', width:'70%'}} />
                     <div style={{display:'flex', gap:'1rem'}}>
                         <button onClick={() =>{
                             setMethod('pix') 
@@ -229,24 +245,27 @@ const Cart:FC = ()=>{
                             setMpModalOpen(true)
                         }} >Cartão</button>
                     </div>
-                    <hr style={{width:'20%', marginBottom:'15px', marginTop:'10px', background:'lightgray'}} />
-
+                    <button 
+                        className="requestOrder-btn"
+                        style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
+                        disabled={cart.length > 0  ? false : true}
+                        onClick={confirmEndRequest}>
+                        Notificar via Whatsapp
+                    </button>
                     {/* QRCODE E PIX */}
                     {method === 'pix' && (qrCode || qrCodeBase64 || qrCodeLink) && (
                         <div style={{marginTop:'1.5rem'}}>
                             <p>Escaneie o QR Code para pagar:</p>
                             {qrCodeBase64 ? (
                                 <img
-                                width='200'
-                                src={`data:image/png;base64,${qrCodeBase64}`}
-                                alt="QR Code Pix"
-                                />
+                                    width='200'
+                                    src={`data:image/png;base64,${qrCodeBase64}`}
+                                    alt="QR Code Pix"/>
                             ) : qrCode ? (
                                 <img
-                                width='200'
-                                src={`https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(qrCode!)}`}
-                                alt="QR Code Pix"
-                                />
+                                    width='200'
+                                    src={`https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(qrCode!)}`}
+                                    alt="QR Code Pix"/>
                             ) : null}
                             {qrCodeLink && (
                                 <p>
@@ -255,7 +274,7 @@ const Cart:FC = ()=>{
                                 </a>
                                 </p>
                             )}
-                            {status && <p style={{marginTop:'2rem'}}>Status: {status}</p>}
+                            {status && <p style={{marginTop:'2rem'}}>Status: {status === 'pending' ? 'Pendente' : 'Concluído'}</p>}
                         </div>
                     )}                                 
                 </div>

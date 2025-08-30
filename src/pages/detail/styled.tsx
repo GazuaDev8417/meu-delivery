@@ -3,65 +3,6 @@ import styled from 'styled-components'
 
 
 
-/* export const Overlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, .5);
-    display: none;
-    transition: 1s;
-    z-index: 900;
-
-    &.active{
-        display: block;
-    }
-`
-
-export const Sidebar = styled.div`
-    position: fixed;
-    top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100%;
-    background: #fff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, .2);
-    transition: right .3s ease-in-out;
-    z-index: 1000;
-
-    &.active{
-        right: 0;
-    }
-
-    h3{
-        text-align: center;
-        padding: 10px 0;
-        border-bottom: 1.5px solid gray;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    li {
-        padding: 20px 30px;
-        border-bottom: 1px solid lightgray;
-        cursor: pointer;
-        transition: .3s ease-in-out;
-
-        &:hover{
-            color: #d33;
-            transform: translateX(10%);
-        }
-
-        &:active{
-            transform: scale(.9);
-        }
-    }
-` */
-
 export const Container = styled.div`
     margin-top: 25vh;
     h1{
@@ -104,6 +45,29 @@ export const Container = styled.div`
 
     .product-desc{
         margin: 10px;
+    }
+
+    .products-container{
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .categories-bar {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .categories-bar h3 {
+        white-space: nowrap;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .categories-bar h3:hover {
+        color: red;
     }
 
     .products-card{
