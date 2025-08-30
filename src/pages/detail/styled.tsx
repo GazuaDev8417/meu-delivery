@@ -150,6 +150,12 @@ export const Container = styled.div`
             /* height: 80%; */
             height: 30vh;
         }
+
+        .categories-bar{
+            max-width: 250px;
+            overflow-x: scroll;
+            margin-bottom: 20px;
+        }
     }
 
     @media(max-width: 375px){

@@ -328,9 +328,9 @@ const Detail:FC = ()=>{
                         ) : <div>Não há {restaurant.name} em suas proximidades</div> }
                     </div> */}                    
                 </div>
-                <div className="products">Menu Principal</div>
+                <div className="products" title="Clique em uma das categorias abaixo">Menu Principal</div>
                 {/* Barra fixa de categorias */}
-                <div className="categories-bar">
+                <div className="categories-bar" title="Clique para ver os produtos">
                     {groupedProducts.map(group => (
                     <h3 
                         key={group.category} 
@@ -374,6 +374,11 @@ const Detail:FC = ()=>{
                                     </button>                                    
                                 </div>
                             ))}
+                            {group.items.filter(product =>(
+                                product.name.toLocaleLowerCase().includes(searchWord.toLowerCase())
+                            )).length === 0 && (
+                                <p>Nenhum produto encontrado nessa categoria</p>
+                            )}
                             </div>
                         )
                     ))}
