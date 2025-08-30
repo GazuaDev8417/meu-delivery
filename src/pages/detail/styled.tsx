@@ -15,7 +15,7 @@ export const Container = styled.div`
         align-items: center;
         border: 1px solid red;
         width: 70vw;
-        margin: auto;
+        margin: 0 auto 10vh;
     }
 
     .image{
@@ -67,7 +67,7 @@ export const Container = styled.div`
     }
 
     .categories-bar h3:hover {
-        color: red;
+        color: red !important;
     }
 
     .products-card{
@@ -147,7 +147,8 @@ export const Container = styled.div`
 
     @media(max-width: 620px){
         .image{
-            height: 80%;
+            /* height: 80%; */
+            height: 30vh;
         }
     }
 

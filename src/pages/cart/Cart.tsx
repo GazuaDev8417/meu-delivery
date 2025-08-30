@@ -195,7 +195,7 @@ const Cart:FC = ()=>{
                     <b>Falar com</b>: {talkTo}
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/meu-delivery/user-address', { state: { mode: 'update' }})
+                    navigate('/meu-delivery/user-address', { state: { mode: 'cart' }})
                 }} />
             </div>
             <div className="addressAndName">

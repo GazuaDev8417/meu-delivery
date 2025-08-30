@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useContext, useEffect, useRef, useState } from "react"
+import { /* ChangeEvent, */ ChangeEvent, FC, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
@@ -7,7 +7,7 @@ import { Products, Restaurant } from "../../types/types"
 import { Container } from './styled'
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
-import { useLoadScript, Libraries } from "@react-google-maps/api"
+//import { useLoadScript, Libraries } from "@react-google-maps/api"
 import { productsImages } from '../../constants/index'
 
 
@@ -15,21 +15,20 @@ import { productsImages } from '../../constants/index'
 
 
 
-type Places = google.maps.places.PlaceResult
-const libraries:Libraries = ['places']
+/* type Places = google.maps.places.PlaceResult
+const libraries:Libraries = ['places'] */
 
 type GroupedProducts = {
   category: string
   items: Products[]
 }
 
-interface ModalProps{
+/* interface ModalProps{
     isVisible:boolean
     onClose: () => void
     product:Products
     request: (product:Products) => void
 }
-
 
 const Modal:FC<ModalProps> = ({ isVisible, onClose, request, product }) =>{
     if(!isVisible) return null
@@ -87,16 +86,14 @@ const Modal:FC<ModalProps> = ({ isVisible, onClose, request, product }) =>{
             </div>
         </div>
     )
-}
+} */
 
 
 
 const Detail:FC = ()=>{
     const navigate = useNavigate()
     const { getAllOrders } = useContext(Context) as GlobalStateContext
-    const selectedOrderId = localStorage.getItem('selectedOrderId')
     const token = localStorage.getItem('token')
-    const ordersRef = useRef<{ [key:string]: HTMLElement | null }>({})
     const [restaurant, setRestaurant] = useState<Restaurant>({
         id:'',
         name:'',
@@ -107,10 +104,10 @@ const Detail:FC = ()=>{
         cnpj:'',
         logourl:''
     })
-    const [places, setPlaces] = useState<Places[]>([])
     const [products, setProducts] = useState<Products[]>([])
     const [openCategory, setOpenCategory] = useState<string | null>(null)
-    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [searchWord, setSearchWord] = useState<string>('')
+    /* const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [selectedProduct, setSelectedProduct] = useState<Products>({
         category:'',
         description:'',
@@ -118,34 +115,15 @@ const Detail:FC = ()=>{
         name:'',
         photoUrl:'',
         price:0
-    })
+    }) */
+
+        /* LOCALIZAÇÃO COM GOOGLE MAPS */
+    /*const [places, setPlaces] = useState<Places[]>([])
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY as string,
         libraries
     })
-    
 
-
-    useEffect(()=>{
-        getRestaurant()
-    }, [])
-
-
-    useEffect(()=>{
-        if(selectedOrderId && ordersRef.current[selectedOrderId]){
-            const timeout =  setTimeout(() => {
-                ordersRef.current[selectedOrderId]?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'nearest'
-                })
-            }, 100)
-
-            return () => clearTimeout(timeout)
-        }
-    }, [selectedOrderId])
-    
-    
     useEffect(()=>{
         if(!isLoaded || !restaurant?.name) return
 
@@ -183,9 +161,16 @@ const Detail:FC = ()=>{
     return () =>{
         isCancelled = true
     }
-    }, [isLoaded, restaurant?.name])
+    }, [isLoaded, restaurant?.name]) */
+    
 
 
+    useEffect(()=>{
+        getRestaurant()
+    }, [])
+    
+    
+    
     const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
         const grouped = products.reduce((acc, product)=>{
             if(!acc[product.category]){
@@ -218,7 +203,7 @@ const Detail:FC = ()=>{
     }  
 
 
-    const handleFinalRequest = (product:Products)=>{
+    /* const handleFinalRequest = (product:Products)=>{
         const now = new Date().toISOString()
         const headers = {
             headers: { Authorization: localStorage.getItem('token')}
@@ -246,10 +231,9 @@ const Detail:FC = ()=>{
                 navigate('/meu-delivery/cart')
             }
         })
-    }    
+    } */    
 
     const request = (product: Products)=>{
-        console.log('Verificando a chamada', product)
         if(!token){
             const decide = window.confirm('Necessário efetuar login para fazer pedidos')
             if(decide){
@@ -257,17 +241,45 @@ const Detail:FC = ()=>{
             }
             return
         }
-
-        if(product.category === 'Cerveja'){
-            setModalVisible(true)
-            setSelectedProduct(product)
-            return
+        
+        const now = new Date().toISOString()
+        const headers = {
+            headers: { Authorization: localStorage.getItem('token')}
         }
-        handleFinalRequest(product)        
+        const body = {
+            product: product.name, 
+            price: product.price,
+            photoUrl: product.photoUrl,
+            quantity: 1,
+            total: product.price,  
+            momentString: now,
+            description: product.description
+        }
+        
+        axios.post(`${BASE_URL}/order`, body, headers).then(res=>{
+            getAllOrders()
+            const decide = confirm(res.data)
+            if(decide){
+                navigate('/meu-delivery/cart')
+            }
+        }).catch(e=>{
+            const message = e.response?.data || 'Erro ao enviar pedido. Tente novamente.'
+            const decide = confirm(message)
+            if(decide){
+                navigate('/meu-delivery/cart')
+            }
+        })
     }
 
 
     const groupedProducts = groupedByCategory(products)
+
+    const handleInputSearch = (e:ChangeEvent<HTMLInputElement>)=>{
+        if(openCategory === null){
+            alert('Selectione o tipo de produto que quer procurar')
+        }
+        setSearchWord(e.target.value)
+    }
 
     
 
@@ -282,7 +294,7 @@ const Detail:FC = ()=>{
                     }}/>
                 ) : <div/>
             }
-            center={ <div/> }
+            center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
             rightIcon={
                 token ? (
                     <IoPersonOutline className="header-icon" onClick={()=>{
@@ -294,15 +306,16 @@ const Detail:FC = ()=>{
             <div className="card">
                 <div className="rest-name">{restaurant.name}</div>
                 <img 
-                    src={`imgs/restaurants/${restaurant.logourl}`}
+                    src={`/meu-delivery/imgs/restaurants/${restaurant.logourl}`}
                     alt="Imagem do restaurante"
                     className="image"/>               
                 <div className="desc">
                     <p>
                         {restaurant.description}
                     </p>
-                    <h3 style={{textAlign:'center', marginTop:'20px', marginBottom:'10px'}}>
-                        {/* {restaurant.name} perto de você */}
+                        {/* LOCALIZAÇÃO COM GOOGLE MAPS */}
+                    {/* <h3 style={{textAlign:'center', marginTop:'20px', marginBottom:'10px'}}>
+                        {restaurant.name} perto de você
                     </h3>
                     <div>
                         {places.length > 0 ? (
@@ -312,8 +325,8 @@ const Detail:FC = ()=>{
                                     {place.vicinity}
                                 </div>
                             ))
-                        ) : <div>{/* Não há {restaurant.name} em suas proximidades */}</div> }
-                    </div>                    
+                        ) : <div>Não há {restaurant.name} em suas proximidades</div> }
+                    </div> */}                    
                 </div>
                 <div className="products">Menu Principal</div>
                 {/* Barra fixa de categorias */}
@@ -328,18 +341,23 @@ const Detail:FC = ()=>{
                     </h3>
                     ))}
                 </div>
+                {/* BUSCA POR PRODUTO */}
+                <input 
+                    style={{marginBottom:10}}
+                    type="text" 
+                    onChange={handleInputSearch}
+                    placeholder="Buscar produto"/>
                 {/* Renderizar somente a categoria aberta */}
                 <div className="products-container">
                     {groupedProducts.map(group => (
                         openCategory === group.category && (
                             <div key={group.category}>
-                            {group.items.map(product => (
+                            {group.items.filter(product => (
+                               product.name.toLocaleLowerCase().includes(searchWord.toLocaleLowerCase()) 
+                            )).map(product => (
                                 <div 
                                     className="products-card"
-                                    key={product.id}
-                                    ref={el => {
-                                        ordersRef.current[product.id] = el
-                                    }}>
+                                    key={product.id}>
                                     <img
                                         className="product-image" 
                                         src={productsImages[product.photoUrl]}
@@ -361,11 +379,11 @@ const Detail:FC = ()=>{
                     ))}
                 </div>
             </div>
-            <Modal 
+            {/* <Modal 
                 isVisible={modalVisible} 
                 product={selectedProduct}
                 request={handleFinalRequest}
-                onClose={() => setModalVisible(false)} /> 
+                onClose={() => setModalVisible(false)} /> */} 
         </Container>
         </>
     )

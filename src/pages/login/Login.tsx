@@ -68,7 +68,7 @@ const Login:FC = ()=>{
                 leftIcon={
                     <IoIosArrowBack 
                         className="header-icon"
-                        onClick={()=> navigate('/meu-delivery/detail')} />
+                        onClick={()=> navigate('/meu-delivery')} />
                 }
                 center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
                 rightIcon={ <div/> }
