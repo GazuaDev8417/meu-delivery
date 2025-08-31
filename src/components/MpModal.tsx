@@ -48,11 +48,12 @@ const Container = styled.div`
 type MpModalProps = {
     setModalOpen: (open:boolean) => void
     setQrCode:Dispatch<SetStateAction<string | null>>
+    total:number
 }
 
-initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
+initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP, { locale: 'pt-BR' })
 
-const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode })=>{
+const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode, total })=>{
     const [status, setStatus] = useState<string>('')
     
 
@@ -97,7 +98,7 @@ const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode })=>{
                 <CardPayment
                     onSubmit={handleSubmit}
                     initialization={{
-                        amount: 100
+                        amount: total
                     }}/>
                 {status && <p style={{marginTop:'2rem'}}>Status: {status}</p>}
             </div>

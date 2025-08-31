@@ -70,7 +70,7 @@ const Login:FC = ()=>{
                         className="header-icon"
                         onClick={()=> navigate('/meu-delivery')} />
                 }
-                center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
+                /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
                 rightIcon={ <div/> }
                 />
             <Container>

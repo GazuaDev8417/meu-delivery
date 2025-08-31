@@ -104,7 +104,7 @@ const Profile = ()=>{
             rightIcon={
                 <AiOutlineLogout className="header-icon" onClick={logout} />
             }
-            center={<h2 className="logo-title">DISK90 DELIVERY</h2>}
+            /* center={<h2 className="logo-title">DISK90 DELIVERY</h2>} */
             leftIcon={
                 <GoHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
             }/>        

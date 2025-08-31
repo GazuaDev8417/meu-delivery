@@ -58,6 +58,7 @@ const GlobalStyle = createGlobalStyle`
       box-shadow: 1px 1px 4px black;
       cursor: pointer;
       transition: .5s;
+      outline: none;
 
       &:hover{
         box-shadow: 0 0 6px #a11414;

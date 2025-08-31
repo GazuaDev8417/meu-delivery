@@ -2,11 +2,16 @@ import styled from 'styled-components'
 import 'react-credit-cards/es/styles-compiled.css'
 
 
-export const Container = styled.div`
+interface ContainerProps{
+    $hasqrcode:boolean
+}
+
+export const Container = styled.div<ContainerProps>`
     display: flex;
     align-items: center;
     flex-direction: column;
     margin: 15vh 5rem;
+    padding-bottom: ${({ $hasqrcode }) => ($hasqrcode ? '0' : '100px' )};
 
     h1{
         text-align: center;
@@ -109,9 +114,17 @@ export const Container = styled.div`
     }
 
     .total-container{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 1rem;
+        border-top: 1px solid lightgrey;
         display: flex;
+        flex-direction: column;
+        gap: .5rem;
         align-items: center;
-        flex-direction: column;;
     }
 
     .requestOrder-btn{

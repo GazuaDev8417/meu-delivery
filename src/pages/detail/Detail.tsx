@@ -294,7 +294,7 @@ const Detail:FC = ()=>{
                     }}/>
                 ) : <div/>
             }
-            center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
+            /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
             rightIcon={
                 token ? (
                     <IoPersonOutline className="header-icon" onClick={()=>{
