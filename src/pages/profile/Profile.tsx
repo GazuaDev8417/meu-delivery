@@ -3,7 +3,6 @@ import Context, { GlobalStateContext } from '../../global/Context'
 import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { GoHome } from "react-icons/go"
 import { MdDelete } from "react-icons/md"
 import Header from "../../components/Header"
 import formatPhoneNumber from '../../utils/formatPhoneNumber'
@@ -105,9 +104,7 @@ const Profile = ()=>{
                 <AiOutlineLogout className="header-icon" onClick={logout} />
             }
             /* center={<h2 className="logo-title">DISK90 DELIVERY</h2>} */
-            leftIcon={
-                <GoHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
-            }/>        
+            leftIcon={ <div/> }/>        
         <Container>    
             <h1>Perfil do usuário</h1>            
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />

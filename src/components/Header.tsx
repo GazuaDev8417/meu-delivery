@@ -1,4 +1,5 @@
-import { ReactNode, RefObject, useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -20,7 +21,11 @@ interface HeaderProps{
 
 
 const Header = (props:HeaderProps)=>{
+    const location = useLocation()
+    const navigate = useNavigate()
     const titleRef = useRef<HTMLDivElement>(null)
+    const isHome = location.pathname === '/meu-delivery'
+
 
     const hideHeaderCenter = (title:HTMLDivElement)=>{
         if(window.scrollY > 0){
@@ -42,7 +47,12 @@ const Header = (props:HeaderProps)=>{
     return(
         <Container>
             {props.leftIcon}
-            <h2 ref={titleRef} className="logo-title">DISK90 DELIVERY</h2>
+            <h2 
+                {... !isHome && { title: 'Voltar para à inicial' }}
+                ref={titleRef} 
+                className="logo-title"
+                onClick={() =>navigate('/meu-delivery')}
+                >DISK90 DELIVERY</h2>
             {props.rightIcon}
         </Container>
     )

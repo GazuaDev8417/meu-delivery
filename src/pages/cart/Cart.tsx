@@ -202,11 +202,7 @@ const Cart:FC = ()=>{
     return(
         <>
         <Header
-            leftIcon={
-                <IoIosArrowBack 
-                    className="header-icon"
-                    onClick={()=> navigate(-1)} />
-            }
+            leftIcon={ <div/> }
             /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
             rightIcon={
                 <IoPersonOutline className="header-icon"
