@@ -104,7 +104,7 @@ const Profile = ()=>{
             rightIcon={
                 <AiOutlineLogout className="header-icon" onClick={logout} />
             }
-            center={<div/>}
+            center={<h2 className="logo-title">DISK90 DELIVERY</h2>}
             leftIcon={
                 <GoHome className="header-icon" onClick={()=> navigate('/meu-delivery')}/>
             }/>        
@@ -121,7 +121,7 @@ const Profile = ()=>{
             </div>
             <div className="address-section">
                 <div style={{width:'100%'}}>
-                    <div style={{textAlign:'center', fontSize:'1.5rem', marginBottom:10}}>Endereço cadastrado:</div>
+                    <div className='registered-address'>Endereço cadastrado:</div>
                     <div style={{maxWidth:'90%'}}>
                         <span className="properties">Local:</span> {user.street} {user.number ? user.number : 'S/N'} <br />
                         <span className="properties">Bairro:</span> {user.neighbourhood} <br />

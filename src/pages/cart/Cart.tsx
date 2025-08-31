@@ -178,7 +178,7 @@ const Cart:FC = ()=>{
                     className="header-icon"
                     onClick={()=> navigate(-1)} />
             }
-            center={ <div/> }
+            center={ <h2 className="logo-title">DISK90 DELIVERY</h2> }
             rightIcon={
                 <IoPersonOutline className="header-icon"
                 onClick={() => navigate('/meu-delivery/profile')} />

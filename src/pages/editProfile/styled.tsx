@@ -113,6 +113,10 @@ export const Container = styled.div`
     }
 
 /* MEDIA QUERY */
+    @media(min-height: 500px){
+        height: 70vh;
+    }
+
     @media(max-width: 320px){
         .input-exception, .submit-btn, .signup-button-exception{
             width: 285px;

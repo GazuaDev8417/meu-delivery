@@ -33,6 +33,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 2px;
     color: #a52a2a;
+
+    @media(max-width: 400px){
+      font-size: 1rem;
+    }
   }
 
   input{
@@ -78,6 +82,11 @@ const GlobalStyle = createGlobalStyle`
         }
         &:active{
             transform: scale(.9);
+        }
+
+        @media(max-width: 400px){
+          margin-top: 15px;
+          font-size: 1.7rem;
         }
 
     }

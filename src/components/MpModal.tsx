@@ -18,19 +18,22 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 
     .iframe-container{
         width: 90%;
         height: 90%;
         background: white;
         position: relative;
+        overflow-y: auto;
     }
 
     .icon{
-        position: absolute;
-        right: 5%;
-        top: 2%;
+        position: fixed;
+        right: 6%;
+        top: 6%;
         z-index: 10;
+        color: red;
     }
 
     .btn{

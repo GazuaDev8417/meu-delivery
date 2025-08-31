@@ -107,4 +107,8 @@ export const Container = styled.div`
             width: 65vw;
         }
     }
+
+    @media(min-height: 700px){
+        height: 80vh;
+    }
 `

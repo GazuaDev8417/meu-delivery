@@ -8,7 +8,7 @@ export const Container = styled.div`
     margin: 15vh 5rem;
 
     @media(max-width: 517px){
-        margin: 15vh 1.5rem;
+        margin: 10vh 1.5rem;
     }
 
     h1{
@@ -52,6 +52,16 @@ export const Container = styled.div`
     .addressAndName{
         margin: 20px 0 10px;
         line-height: 30px;
+    }
+
+    .registered-address{
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+
+        @media(max-width: 375px){
+            font-size: 1.3rem;
+        }
     }
 
     .icon{

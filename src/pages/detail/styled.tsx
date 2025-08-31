@@ -66,8 +66,10 @@ export const Container = styled.div`
         transition: color 0.2s;
     }
 
-    .categories-bar h3:hover {
-        color: red !important;
+    @media(hover: hover) and (pointer: fine){
+        .categories-bar h3:hover {
+            color: red !important;
+        }
     }
 
     .products-card{
@@ -158,8 +160,8 @@ export const Container = styled.div`
         }
     }
 
-    @media(max-width: 375px){
-        
+    @media(max-width: 400px){
+        margin-top: 15vh;
     }
 
 `
