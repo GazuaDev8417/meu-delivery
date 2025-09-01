@@ -86,8 +86,7 @@ const GlobalStyle = createGlobalStyle`
             transform: scale(.9);
         }
 
-        @media(max-width: 400px){
-          margin-top: 15px;
+        @media(max-width: 420px){
           font-size: 1.7rem;
         }
 

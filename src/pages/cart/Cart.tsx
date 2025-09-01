@@ -3,7 +3,6 @@ import Context, { GlobalStateContext } from "../../global/Context"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
-import { IoIosArrowBack } from "react-icons/io"
 import { IoPersonOutline } from "react-icons/io5"
 import { MdEdit } from 'react-icons/md'
 import { Order } from "../../types/types"
@@ -44,8 +43,7 @@ const Cart:FC = ()=>{
     const [qrCodeLink, setQrCodeLink] = useState<string | null>(null)
     const [method, setMethod] = useState<'pix' | 'boleto' | 'card' | null>(null)
     const hasQrCode = !!(qrCode || qrCodeBase64 || qrCodeLink)
-
-
+    
 
 
     useEffect(()=>{
@@ -206,7 +204,7 @@ const Cart:FC = ()=>{
             /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
             rightIcon={
                 <IoPersonOutline className="header-icon"
-                onClick={() => navigate('/meu-delivery/profile')} />
+                    onClick={() => navigate('/meu-delivery/profile')} />
             }/>
         <Container $hasqrcode={hasQrCode}>
             <h1>Meu Carrinho</h1>
@@ -228,31 +226,32 @@ const Cart:FC = ()=>{
             </div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             {/* CARD DOS PRODUTOS NO CARRINHO */}
-            {cart.length > 0 ? cart.map(item =>(
-                <div key={item.id} className="card">
-                    <span>
-                        <img src={productsImages[item.photoUrl]}  alt="Imagem do produto" />
-                    </span>
-                    <span>
-                        <div className="product-name">{item.product}</div>
-                        <div className="product-details">
-                            <b>Quantidade: </b>{item.quantity} <br />
-                            <b>Preço: </b>R$ {Number(item.price).toFixed(2)} <br />
-                            <b>Total: </b>R$ {(Number(item.price) * Number(item.quantity)).toFixed(2)} <br />
-                        </div>
-                    </span>
-                    <div className="btn-container">
-                        <input 
-                            type="number"
-                            min={1} 
-                            value={item.quantity}
-                            onChange={(e) => handleNumber(e, item.id)}
-                            className="input-number" />                 
-                        <button className="btn-remove" onClick={()=> removeItem(item.id)} >Remover</button> 
-                    </div>                        
-                </div>
-                
-            )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
+            {/* <div className="cart-container"> */}
+                {cart.length > 0 ? cart.map(item =>(
+                    <div key={item.id} className="card">
+                        <span>
+                            <img src={productsImages[item.photoUrl]}  alt="Imagem do produto" />
+                        </span>
+                        <span>
+                            <div className="product-name">{item.product}</div>
+                            <div className="product-details">
+                                <b>Quantidade: </b>{item.quantity} <br />
+                                <b>Preço: </b>R$ {Number(item.price).toFixed(2)} <br />
+                                <b>Total: </b>R$ {(Number(item.price) * Number(item.quantity)).toFixed(2)} <br />
+                            </div>
+                        </span>
+                        <div className="btn-container">
+                            <input 
+                                type="number"
+                                min={1} 
+                                value={item.quantity}
+                                onChange={(e) => handleNumber(e, item.id)}
+                                className="input-number" />                 
+                            <button className="btn-remove" onClick={()=> removeItem(item.id)} >Remover</button> 
+                        </div>                        
+                    </div>                
+                )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
+            {/* </div> */}
             {/* MEIOS DE PAGAMENTO */}
             {mpModalOpen && method === 'card' && (
                 <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} total={total}/>
@@ -293,6 +292,10 @@ const Cart:FC = ()=>{
                         }} >Pix</button>
 
                         <button onClick={() =>{
+                            setQrCode(null)
+                            setQrCodeBase64(null)
+                            setQrCodeLink(null)
+
                             setMethod('card')
                             setMpModalOpen(true)
                         }} >Cartão</button>

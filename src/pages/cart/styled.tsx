@@ -39,22 +39,17 @@ export const Container = styled.div<ContainerProps>`
         cursor: pointer;
     }
 
-    hr{
-        width:'100%';
-        background:'lightgray';
-    }
-
     .rest-name{
         text-align: center;
         font-size: 1.5rem;
         margin: 2vh 0;
     }
 
-    .cart-container{
-        width: 120%;
+    /* .cart-container{
+        width: 100%;
         max-height: 180px;
         overflow-y: auto;
-    }
+    } */
 
     .card{
         display: flex;
@@ -90,24 +85,6 @@ export const Container = styled.div<ContainerProps>`
         border-radius: 10px;  
         /* box-shadow: 2px 2px 4px; */
     }
-
-    /* .select-container{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 2rem 0 3rem;
-        width: 100%;
-    }
-
-    .total-price{
-        font-size: 1.5rem;
-    }
-
-    .select{
-        height: 30px;
-        font-size: 1rem;
-        border-radius: 5px;
-    } */
 
     .totalByGroup{
         font-size: 1.2rem;
@@ -161,10 +138,10 @@ export const Container = styled.div<ContainerProps>`
             font-size: 1.2rem;
         }
 
-        .card{
+        /* .card{
             flex-direction: column;
             width: 110%;
-        }
+        } */
 
         .btn-container{
             display: flex;
@@ -178,13 +155,9 @@ export const Container = styled.div<ContainerProps>`
             }
         }
 
-        .card img{
+        /* .card img{
             width: 30vw;      
-        }
-
-        .total-price{
-            font-size: 1rem;
-        }
+        } */            
     }
 
     @media(max-width: 532px){
@@ -192,18 +165,15 @@ export const Container = styled.div<ContainerProps>`
             width: 120%;
         }
 
-        .select-container{
+        .card{
             flex-direction: column;
-            gap: 10px;
-
-            div{
-                font-size: 1rem;
-            }
         }
     }
 
     @media(max-width: 416px){
-        margin-top: 10vh;
+        margin: 13vh 5rem;
+        padding-bottom: 150px;
+
         .address-section{
             width: 140%;
             font-size: 13px;
