@@ -6,7 +6,7 @@ entrega de bebdias. Abaixo segue explicação do seu funcionamento com a ajuda d
 
 <br><img src='./imgReadme/home.png' width=400> <img src='./imgReadme/home-content.png' width=400><br><br>
 Acima está a imagem da home page da aplicação, onde temos os produtos separados por categorias, onde
-clicano em cada uma delas é possível visualizar seus produtos, os quais possuem o botão pedir. Cada produto pode ser adicionado ao carrinho clicando nesse botão. 
+clicando em cada uma delas é possível visualizar seus produtos, os quais possuem o botão pedir. Cada produto pode ser adicionado ao carrinho clicando nesse botão. 
 
 <img src='./imgReadme/carrinho.png' width=300> <img src='./imgReadme/carrinho_pix.png' width=300>
 <img src='./imgReadme/carrinho_cartao.png' width=300><br>
