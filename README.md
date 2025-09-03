@@ -1,29 +1,21 @@
 
-# Projeto Ifuture
+# Projeto Meu Delivery
 
-Aplicação que simula de forma demonstrativa o sistema de entregas de alimentos.<br>
-Por ser demonstrativa a aplicação não apresenta os métodos de localização disponibilizado pelo Google, o que a deixaria mais aplicável. No entanto, tenho como único intuíto neste projeto, apresentar minhas skills de uma maneira tão ampla quanto generalizada, por isso uma aplicação fullstack.
+Aplicação que simula um provedor de serviços de entrega. No caso em questão trata-se de um provedor de 
+entrega de bebdias. Abaixo segue explicação do seu funcionamento com a ajuda de imagens representativas.
 
-Neste frontend é apresentada uma lista de restaurantes, que podem também ser dividos por categorias, como mostra figura abaixo:
-<br><br> <img src='./imgReadme/categorias.png'><br><br/>
-Ao clicar na categoria os respectivos restaurantes são listados de acordo com a categoria selecionada. Da mesma forma o input para busca resulta somente em restaurantes listados na respectiva categoria, sendo assim se o suário buscar por um restaurante que esteja na aplicação mas não pertence à categoria selecionada o resultado será 'Nenhum restaurante encontrado!'.
+<br><img src='./imgReadme/home.png' width=400> <img src='./imgReadme/home-content.png' width=400><br><br>
+Acima está a imagem da home page da aplicação, onde temos os produtos separados por categorias, onde
+clicano em cada uma delas é possível visualizar seus produtos, os quais possuem o botão pedir. Cada produto pode ser adicionado ao carrinho clicando nesse botão. 
 
-Ao clicar no card de um restaurante o usuário é direcionado para página de detalhes do mesmo, contendo sua descrição, cardápio e endereços próximos ao usuário logado, para isso é necessário permitir sua localização. Esta página é onde o usuário pode fazer seus pedidos, adicioná-los ao carrinho e finalizar sua compra.
-<br><br> <img src='./imgReadme/localizacao.png' width='500' height='300'>&nbsp;&nbsp;<img src='./imgReadme/locais.png' width="500" height='300'> 
-<br><br>Todos os pedios realizados pelo usuário vão para o carrinho. Lá o usuário pode alterar a quantidade dos produtos do seu pedido. O valor de cada pedido juntamente com o total da compra altera de forma simultânea com a quantidade.
-<br><br> <img src='./imgReadme/cart.png' width='500'>&nbsp;&nbsp;&nbsp;<img src='./imgReadme/qnt.png' width='500'>
+<img src='./imgReadme/carrinho.png' width=300> <img src='./imgReadme/carrinho_pix.png' width=300>
+<img src='./imgReadme/carrinho_cartao.png' width=300><br>
 
+No carrinho é possível alterar a quantidade de produtos pedidos e escolher a forma de pagamento. Como se trata de uma simulação o botão "Notificar via Whatsapp" foi posto para se ter uma ideia do que acontece quando o pagamento é realizado. Neste caso o provedor do serviço é notificado a respeito da solicitação e providencia a entrega.<br>
 
-Dentre os métodos de pagamento a aplicação apresenta duas implementações, uma para dinheiro utilizando transferência pix com o auxílio de um QRCode que é gerado pela aplicação. O QRCode gerado representa o total da compra, se o usuário escaneá-lo verá a numeração correspondente ao valor.
-<br><br> <img src='./imgReadme/qrcode.png'>
-
-Ao clicar em copiar o valor total da compra vai para área de transfêrencia.
-
-No método cartão de crédito foi utilizada a biblioteca react-credit-cards.
-<br><br> <img src='./imgReadme/credit-card.png'>
+Aplicação fullstack desenvolvida em Vite React com Typescript e API com Nodejs e Express. Consulta ao banco usando Knex query builder. Foi utilizado o SDK oficial do Mercado Pago @mercadopago/sdk-react, para simular as opções de pagamento, que até então são realizadas em modo teste por se tratar de uma demonstração. Abaixo seguem os links da aplicação e da documentação da API.
 
 
-><b>Obsservação</b>: Lembrando que, como se trata de uma demontração, ao selecionar o cartão o botão para finalizar a compra é habilitado. Está implementação se limita ao frontend, servindo unicamente para habilitação do botão 'Finalizar Compra'. Na <a href='https://github.com/GazuaDev8417/ifuture_server'>API</a>, acessando a rota 'app.patch('/finished_orders/:id', orderController.endOrders)', do arquivo index.ts, no diretório src, e navegando por suas classes conseguintes, é possivel verificar que não há envio de dados de cartão de crédito.
+>Link da aplicação: https://gazuadev8417.github.io/meu-delivery/
 
-<br><br>
->Link da aplicação: https://gazuadev8417.github.io/ifuture_react/ 
+>Documentação: https://documenter.getpostman.com/view/48121909/2sB3HjM1z7  
