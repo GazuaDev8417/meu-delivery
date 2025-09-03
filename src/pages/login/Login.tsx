@@ -2,7 +2,6 @@ import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
-import { IoIosArrowBack } from "react-icons/io"
 import { FaEyeSlash, FaEye } from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom"
 import { Container } from "./styled"

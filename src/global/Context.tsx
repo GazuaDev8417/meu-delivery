@@ -2,7 +2,7 @@ import {
     Dispatch, ReactNode, SetStateAction,
     createContext, useState
 } from "react"
-import { Restaurant, Products, User, Order } from "../types/types"
+import { User, Order } from "../types/types"
 import axios from "axios"
 import { BASE_URL } from "../constants/url"
 
@@ -29,7 +29,6 @@ const Context = createContext<GlobalStateContext | null>(null)
 export const GlobalState = (props:GlobalStateProps)=>{
     const [cart, setCart] = useState<Order[]>([])
     const [allFieldsFilled, setAllfieldsFilled] = useState<boolean>(false)
-    const [products, setProducts] = useState<Products[]>([])
     const [user, setUser] = useState<User>({
         id:'',
         username:'',
