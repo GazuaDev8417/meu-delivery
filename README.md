@@ -1,6 +1,8 @@
 # Meu Delivery 🍹🥤
 
-Aplicação **fullstack** desenvolvida para simular um sistema de delivery, com integração de pagamentos<!-- , geolocalização e API em nuvem -->. 
+Aplicação **fullstack** desenvolvida para simular um sistema de delivery com integração de pagamentos. Neste caso foi usado um delivery de bebidas como exemplo. 
+
+Veja [aqui](https://gazuadev8417.github.io/meu-delivery)
 
 ---
 
@@ -10,7 +12,6 @@ Aplicação **fullstack** desenvolvida para simular um sistema de delivery, com 
 - **ReactTS** com navegação por rotas
 - **Styled-components** na estilização
 - **@mercadopago/sdk-react** para integração de **pagamentos online**
-<!-- - **@react-google-maps/api** do **Google Maps** para geolocalização e proximidade do estabelecimento -->
 
 ### Backend
 - **Node.js + Express**
@@ -25,7 +26,6 @@ Aplicação **fullstack** desenvolvida para simular um sistema de delivery, com 
 - Sistema de carrinho e checkout
 - Pagamento online simulado via **Mercado Pago**
 - Consumo de API própria hospedada em nuvem
-<!-- - Localização do estabelecimento no **Google Maps** -->
 
 ---
 
