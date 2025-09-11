@@ -1,4 +1,4 @@
-# Meu Delivery 🍔📦
+# Meu Delivery 🍹🥤
 
 Aplicação **fullstack** desenvolvida para simular um sistema de delivery, com integração de pagamentos<!-- , geolocalização e API em nuvem -->. 
 
