@@ -60,32 +60,30 @@ const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode, total })=>{
 
     const handleSubmit = async(formData:any)=>{
         try{
-        const res = await axios.post(`${BASE_URL}/pay`, {
-            token: formData.token,
-            paymentMethodId: formData.paymentMethodId,
-            email: formData.cardholderEmail
-        })
+            const res = await axios.post(`${BASE_URL}/pay`, {
+                token: formData.token,
+                paymentMethodId: formData.paymentMethodId,
+                email: formData.cardholderEmail
+            })
 
-        setStatus(res.data.status)
-        setQrCode(null)
+            setStatus(res.data.status)
+            setQrCode(null)
 
-        const orderId = res.data.orderId;
-
-        // inicia polling
-        const interval = setInterval(async () => {
-            const statusRes = await axios.get(`${BASE_URL}/payments/status/${orderId}`);
-            if (statusRes.data.status !== status) {
-                setStatus(statusRes.data.status);
-
-                if (statusRes.data.status === 'approved') {
+            const orderId = res.data.id;
+            const interval = setInterval(async () => {
+                const statusRes = await fetch(`${BASE_URL}/payment-status/${orderId}`)
+                const statusData = await statusRes.json();
+                console.log(statusData)
+                if (statusData.status === 'approved') {
                     clearInterval(interval);
-                    alert('Pagamento com cartão aprovado! 🎉');
+                    alert('Pagamento com Pix aprovado! 🎉');
+                }else if(statusData.status === 'pending'){
+                    console.error('Pagemento pendente')
                 }
-            }
-        }, 5000)
+            }, 5000)
         }catch(e){
-        console.error(e)
-        setStatus('Erro')
+            console.error(e)
+            setStatus('Erro')
         }        
     }
 

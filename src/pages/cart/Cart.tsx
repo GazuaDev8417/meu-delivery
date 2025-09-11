@@ -172,17 +172,16 @@ const Cart:FC = ()=>{
             setQrCodeBase64(res.data.qr_code_base64 || null)
             setQrCodeLink(res.data.qr_code_link || null)
 
-            const orderId = res.data.orderId
-
+            const orderId = res.data.id;
             const interval = setInterval(async () => {
-                const statusRes = await axios.get(`${BASE_URL}/payments/status/${orderId}`);
-                if (statusRes.data.status !== status) {
-                    setStatus(statusRes.data.status);
-
-                    if (statusRes.data.status === 'approved') {
-                        clearInterval(interval);
-                        alert('Pagamento com cartão aprovado! 🎉');
-                    }
+                const statusRes = await fetch(`${BASE_URL}/payment-status/${orderId}`)
+                const statusData = await statusRes.json();
+                console.log(statusData)
+                if (statusData.status === 'approved') {
+                    clearInterval(interval);
+                    alert('Pagamento com Pix aprovado! 🎉');
+                }else if(statusData.status === 'pending'){
+                    console.error('Pagemento pendente')
                 }
             }, 5000)
         }catch(e){
