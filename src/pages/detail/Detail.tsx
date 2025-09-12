@@ -1,4 +1,12 @@
-import { /* ChangeEvent, */ ChangeEvent, FC, useContext, useEffect, useState } from "react"
+import { 
+    /* ChangeEvent, */ 
+    ChangeEvent, 
+    FC, 
+    useContext, 
+    useEffect, 
+    useState,
+    useRef 
+} from "react"
 import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
@@ -27,6 +35,7 @@ type GroupedProducts = {
 
 const Detail:FC = ()=>{
     const navigate = useNavigate()
+    const productsRef = useRef<HTMLDivElement | null>(null)
     const { getAllOrders } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
     const [restaurant, setRestaurant] = useState<Restaurant>({
@@ -103,6 +112,13 @@ const Detail:FC = ()=>{
     useEffect(()=>{
         getRestaurant()
     }, [])
+
+
+    useEffect(()=>{
+        if(openCategory && productsRef.current){
+            productsRef.current.scrollIntoView({ behavior:'smooth' })
+        }
+    }, [openCategory])
     
     
     
@@ -229,7 +245,7 @@ const Detail:FC = ()=>{
                     }}/>
                 ) : <div/>
             }
-            /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
+            
             rightIcon={
                 token ? (
                     <IoPersonOutline className="header-icon" onClick={()=>{
@@ -283,7 +299,7 @@ const Detail:FC = ()=>{
                     onChange={handleInputSearch}
                     placeholder="Buscar produto"/>
                 {/* Renderizar somente a categoria aberta */}
-                <div className="products-container">
+                <div className="products-container" ref={productsRef}>
                     {groupedProducts.map(group => (
                         openCategory === group.category && (
                             <div key={group.category}>

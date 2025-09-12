@@ -121,7 +121,7 @@ const EditProfile:FC = ()=>{
                         <button 
                             className="signup-button signup-button-exception"
                             type="button"
-                            onClick={()=> navigate('/meu-delivery/profile')}>Voltar para perfil</button>
+                            onClick={()=> navigate('/meu-delivery/')}>Voltar para home</button>
                     </div>
                 </form>
         </Container>

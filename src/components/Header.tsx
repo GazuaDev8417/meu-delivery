@@ -47,12 +47,12 @@ const Header = (props:HeaderProps)=>{
     return(
         <Container>
             {props.leftIcon}
-            <h2 
+            {/* <h2 
                 {... !isHome && { title: 'Voltar para à inicial' }}
                 ref={titleRef} 
                 className="logo-title"
                 onClick={() =>navigate('/meu-delivery')}
-                >DISK90 DELIVERY</h2>
+                >DISK90 DELIVERY</h2> */}
             {props.rightIcon}
         </Container>
     )

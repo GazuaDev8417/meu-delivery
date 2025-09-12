@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 export const Container = styled.div`
-    margin-top: 25vh;
+    margin-top: 2vh;
     h1{
         text-align: center;
         margin: 5vh 0 3vh;

@@ -4,6 +4,7 @@ import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { IoPersonOutline } from "react-icons/io5"
+import { IoIosArrowBack } from 'react-icons/io'
 import { MdEdit } from 'react-icons/md'
 import { Order } from "../../types/types"
 import { useNavigate } from "react-router-dom"
@@ -20,6 +21,7 @@ initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
 const Cart:FC = ()=>{
     const navigate = useNavigate()
     const qrCodeRef = useRef<HTMLDivElement>(null)
+    const cartRef = useRef<HTMLDivElement>(null)
     const { 
         cart, setCart, getAllOrders, getProfile, user
     } = useContext(Context) as GlobalStateContext
@@ -73,10 +75,12 @@ const Cart:FC = ()=>{
     }, [])
 
     useEffect(()=>{
-        if(hasQrCode){
+        if(hasQrCode && qrCodeRef.current){
             qrCodeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        }else if(cart.length > 0 && cartRef.current){
+            cartRef.current?.scrollIntoView({ behavior:'smooth', block:'start'})
         }
-    }, [hasQrCode])
+    }, [hasQrCode, cart])
 
     
 
@@ -199,7 +203,7 @@ const Cart:FC = ()=>{
     return(
         <>
         <Header
-            leftIcon={ <div/> }
+            leftIcon={ <IoIosArrowBack className='header-icon' onClick={() => navigate(-1)}/> }
             /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
             rightIcon={
                 <IoPersonOutline className="header-icon"
@@ -225,7 +229,7 @@ const Cart:FC = ()=>{
             </div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             {/* CARD DOS PRODUTOS NO CARRINHO */}
-            {/* <div className="cart-container"> */}
+            <div className="cart-container" ref={cartRef}>
                 {cart.length > 0 ? cart.map(item =>(
                     <div key={item.id} className="card">
                         <span>
@@ -250,7 +254,7 @@ const Cart:FC = ()=>{
                         </div>                        
                     </div>                
                 )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
-            {/* </div> */}
+            </div>
             {/* MEIOS DE PAGAMENTO */}
             {mpModalOpen && method === 'card' && (
                 <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} total={total}/>

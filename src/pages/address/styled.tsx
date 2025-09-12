@@ -15,6 +15,10 @@ export const Container = styled.div`
         left: 2%;
         font-size: 2rem;
         cursor: pointer;
+
+        &:hover{
+            color: red;
+        }
     }
 
     img{

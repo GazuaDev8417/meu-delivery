@@ -3,7 +3,6 @@ import Context, { GlobalStateContext } from '../../global/Context'
 import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { IoIosArrowBack } from 'react-icons/io'
 import { MdDelete } from "react-icons/md"
 import Header from "../../components/Header"
 import formatPhoneNumber from '../../utils/formatPhoneNumber'
@@ -15,7 +14,7 @@ import { Order } from '../../types/types'
 
 
 
-const Profile = ()=>{
+const AdmUser = ()=>{
     const navigate = useNavigate()
     const { user, getProfile } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
@@ -104,7 +103,8 @@ const Profile = ()=>{
             rightIcon={
                 <AiOutlineLogout className="header-icon" onClick={logout} />
             }
-            leftIcon={ <IoIosArrowBack className='header-icon' onClick={() => navigate(-1)}/> }/>        
+            /* center={<h2 className="logo-title">DISK90 DELIVERY</h2>} */
+            leftIcon={ <div/> }/>        
         <Container>    
             <h1>Perfil do usuário</h1>            
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
@@ -163,4 +163,4 @@ const Profile = ()=>{
     )
 }
 
-export default Profile
+export default AdmUser

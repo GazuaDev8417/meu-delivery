@@ -44,11 +44,10 @@ export const Container = styled.div<ContainerProps>`
         margin: 2vh 0;
     }
 
-    /* .cart-container{
+    .cart-container{
         width: 100%;
-        max-height: 180px;
-        overflow-y: auto;
-    } */
+        /* max-height: 180px; */
+    }
 
     .card{
         display: flex;

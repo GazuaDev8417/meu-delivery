@@ -7,6 +7,7 @@ import UserAddress from "../pages/address/UserAddress"
 import Login from "../pages/login/Login"
 import Profile from "../pages/profile/Profile"
 import EditProfile from "../pages/editProfile/EditProfile"
+import AdmUser from "../pages/admuser/AdmUser"
 
 
 
@@ -20,6 +21,7 @@ const Router:FC = ()=>{
             <Route path="/meu-delivery/signup" element={<Signup/>} />
             <Route path="/meu-delivery/user-address" element={<UserAddress/>} />
             <Route path="/meu-delivery/login" element={<Login/>} />
+            <Route path="/meu-delivery/admuser" element={<AdmUser/>} />
         </Routes>
     )
 }
