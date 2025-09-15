@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useRef } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -15,16 +14,12 @@ const Container = styled.div`
 
 interface HeaderProps{
     leftIcon:ReactNode
-    /* center:ReactNode */
     rightIcon:ReactNode
 }
 
 
 const Header = (props:HeaderProps)=>{
-    const location = useLocation()
-    const navigate = useNavigate()
     const titleRef = useRef<HTMLDivElement>(null)
-    const isHome = location.pathname === '/meu-delivery'
 
 
     const hideHeaderCenter = (title:HTMLDivElement)=>{
@@ -47,12 +42,6 @@ const Header = (props:HeaderProps)=>{
     return(
         <Container>
             {props.leftIcon}
-            {/* <h2 
-                {... !isHome && { title: 'Voltar para à inicial' }}
-                ref={titleRef} 
-                className="logo-title"
-                onClick={() =>navigate('/meu-delivery')}
-                >DISK90 DELIVERY</h2> */}
             {props.rightIcon}
         </Container>
     )

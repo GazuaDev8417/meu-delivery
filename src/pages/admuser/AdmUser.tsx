@@ -76,27 +76,7 @@ const AdmUser = ()=>{
             orderHistory()
         }).catch(e => alert(e.response.data))
     }
-
-
-    const cleanHistory = ()=>{
-        const headers = {
-            headers: { Authorization: localStorage.getItem('token') }
-        }
-
-        if(orders.length === 0){
-            alert('Seu histórico está vázio!')
-
-            return
-        }
-
-        const decide = window.confirm('Tem certeza que deseja apagar todo seu histórico?')
-        if(decide){
-            axios.delete(`${BASE_URL}/orders`, headers).then(()=>{
-                orderHistory()
-                setOrders([])
-            }).catch(e => console.error(e.response.data))
-        }
-    }
+    
     
 
 
