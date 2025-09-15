@@ -70,7 +70,6 @@ const Login:FC = ()=>{
                 rightIcon={ <div/> }
                 />
             <Container>
-                
                 <div className="title">Login</div>
                 <form onSubmit={login}>               
                     <div className="input-icon-container">

@@ -8,6 +8,11 @@ export const Container = styled.div`
     justify-content: center;
     height: 100vh;
     padding: 1rem;
+
+    @media(max-width: 768px){
+        justify-content: flex-start;
+        margin-top: 10vh;
+    }
     
     img{
         width: 120px;

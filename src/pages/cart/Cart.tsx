@@ -143,12 +143,12 @@ const Cart:FC = ()=>{
         if(cart.length === 0) return
 
         const newMsg = cart.map(item =>
-            `${item.quantity} ${item.product} R$ ${Number(item.price).toFixed(2)}\nTotal R$ ${Number(item.price) * Number(item.quantity)}`
+            `${item.quantity} ${item.product} R$ ${Number(item.price).toFixed(2)}\nTotal R$ ${Number(item.price) * Number(item.quantity)}\n\n`
         ).join('\n')
         const totalGroup = `Total Geral R$ ${Number(total).toFixed(2)}`
         const mensagemUrl = `Novo pedido:\n\n${newMsg}\n\n${totalGroup}\n\nPara o endereço: ${address}\nCEP: ${cep}\nLocal: ${local}\n${referencia.trim()}\nFalar com: ${talkTo}`
-        const url = `https://wa.me/557182354215?text=${encodeURIComponent(mensagemUrl)}`
-
+        const url = `https://wa.me/557184407882?text=${encodeURIComponent(mensagemUrl)}`
+/* 82354215 */
         window.open(url, '_blank')  
         //endOrders()     
     }
@@ -160,6 +160,7 @@ const Cart:FC = ()=>{
 
 
     const handlePix = async()=>{
+        alert('Como se trata de um projeto demonstrativo o pagamento não é realizado realmente')
         try{
             const res = await axios.post(`${BASE_URL}/pay`, {
                 paymentMethodId: 'pix',
@@ -195,6 +196,16 @@ const Cart:FC = ()=>{
                 console.error('Erro inesperado, tente novamente: ', e)
             }
         }
+    }
+
+    const handlePaymentCard = ()=>{
+        alert('Como se trata de um projeto demonstrativo o pagamento não é realizado realmente')
+        setQrCode(null)
+        setQrCodeBase64(null)
+        setQrCodeLink(null)
+
+        setMethod('card')
+        setMpModalOpen(true)
     }
 
     
@@ -294,20 +305,13 @@ const Cart:FC = ()=>{
                             handlePix()
                         }} >Pix</button>
 
-                        <button onClick={() =>{
-                            setQrCode(null)
-                            setQrCodeBase64(null)
-                            setQrCodeLink(null)
-
-                            setMethod('card')
-                            setMpModalOpen(true)
-                        }} >Cartão</button>
+                        <button onClick={handlePaymentCard} >Cartão</button>
                     </div>
                     <button 
                         className="requestOrder-btn"
                         style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
                         disabled={cart.length > 0  ? false : true}
-                        onClick={confirmEndRequest}>
+                        onClick={endRequests}>
                         Notificar via Whatsapp
                     </button>                                                     
                 </div>

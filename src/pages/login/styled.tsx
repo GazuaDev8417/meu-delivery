@@ -1,19 +1,18 @@
 import styled from 'styled-components'
 
 
-
-export const LogoWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
 export const Container = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    padding: 1rem;    
+    padding: 1rem;
+    
+    @media(max-width: 768px){
+        justify-content: flex-start;
+        margin-top: 10vh;
+    }
     
     .title{
         font-size: 2rem;

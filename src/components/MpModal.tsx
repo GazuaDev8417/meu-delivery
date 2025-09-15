@@ -56,6 +56,7 @@ initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP, { locale: 'pt-BR' })
 const MpModal:FC<MpModalProps> = ({ setModalOpen, setQrCode, total })=>{
     const [status, setStatus] = useState<string>('')
     
+    
 
 
     const handleSubmit = async(formData:any)=>{

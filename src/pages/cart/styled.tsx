@@ -46,7 +46,9 @@ export const Container = styled.div<ContainerProps>`
 
     .cart-container{
         width: 100%;
-        /* max-height: 180px; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .card{
