@@ -106,7 +106,6 @@ const Detail:FC = ()=>{
         isCancelled = true
     }
     }, [isLoaded, restaurant?.name]) */
-    
 
 
     useEffect(()=>{
@@ -294,7 +293,7 @@ const Detail:FC = ()=>{
                 </div>
                 {/* BUSCA POR PRODUTO */}
                 <input 
-                    style={{marginBottom:10}}
+                    style={{margin:10, width:'50%'}}
                     type="text" 
                     onChange={handleInputSearch}
                     placeholder="Buscar produto"/>

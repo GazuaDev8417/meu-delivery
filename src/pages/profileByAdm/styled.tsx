@@ -92,8 +92,7 @@ export const Container = styled.div`
         margin: 5px 0;
         line-height: 30px;
         display: flex;
-        flex-direction: column;
-        /* align-items: center; */
+        align-items: center;
         justify-content: space-between;
     }
 
@@ -107,13 +106,6 @@ export const Container = styled.div`
     }
     a:hover{
         cursor: pointer;
-    }
-
-    .btn-container{
-        display: flex;
-        align-items: center;
-        flex-direction: row-reverse;
-        justify-content: space-between;
     }
 
 /* MEDIA QUERY */

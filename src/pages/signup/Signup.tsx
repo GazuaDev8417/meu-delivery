@@ -52,7 +52,8 @@ const Signup:FC = ()=>{
             name: form.username,
             email: form.email,
             phone: form.phone.replace(/\D/g, ''),
-            password: form.password
+            password: form.password,
+            role: 'NORMAL'
         }
         
         axios.post(`${BASE_URL}/signup`, body).then(res=>{

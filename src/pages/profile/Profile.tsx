@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import Context, { GlobalStateContext } from '../../global/Context'
 import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
@@ -16,28 +16,32 @@ import { Order } from '../../types/types'
 
 
 const Profile = ()=>{
+    const cartRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
     const { user, getProfile } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
     const [orders, setOrders] = useState<Order[]>([])
     const [hoveredItemId, setHoveredItemId] = useState<string>('')
   
-  
 
     useEffect(()=>{
-
         if(!token){
             navigate('/meu-delivery')
             return
         }
     }, [])
 
+
+    useEffect(()=>{
+        if(orders.length > 0){
+            cartRef.current?.scrollIntoView({ behavior:'smooth', block:'start'})
+        }
+    }, [orders])
+
     
     useEffect(()=>{
-        if(token){
-            getProfile()
-            orderHistory()
-        }        
+        getProfile()
+        orderHistory()
     }, [])
 
 
@@ -52,7 +56,7 @@ const Profile = ()=>{
         }).catch(e => console.error(e.response.data))
     }
 
-
+    
     const logout = ()=>{
         const decide = window.confirm('Tem certeza que deseja deslogar?')
 
@@ -139,7 +143,7 @@ const Profile = ()=>{
             </button>}
             <div id='history' className="order-history">Histórico de pedidos</div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
-            <div className="card-container">
+            <div className="card-container" ref={cartRef}>
                 {orders && orders.map(order=>(
                     <div className="card" key={order.id}>
                         <div className="card-content">

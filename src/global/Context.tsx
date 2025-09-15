@@ -2,6 +2,7 @@ import {
     Dispatch, ReactNode, SetStateAction,
     createContext, useState
 } from "react"
+import { useNavigate } from "react-router-dom"
 import { User, Order } from "../types/types"
 import axios from "axios"
 import { BASE_URL } from "../constants/url"
@@ -11,6 +12,7 @@ import { BASE_URL } from "../constants/url"
 export interface GlobalStateContext{
     getProfile: () => void
     user:User
+    setUser:Dispatch<SetStateAction<User>>
     getAllOrders: () => void
     cart:Order[]
     setCart:Dispatch<SetStateAction<Order[]>>
@@ -27,6 +29,7 @@ const Context = createContext<GlobalStateContext | null>(null)
 
 
 export const GlobalState = (props:GlobalStateProps)=>{
+    const navigate = useNavigate()
     const [cart, setCart] = useState<Order[]>([])
     const [allFieldsFilled, setAllfieldsFilled] = useState<boolean>(false)
     const [user, setUser] = useState<User>({
@@ -40,7 +43,8 @@ export const GlobalState = (props:GlobalStateProps)=>{
         state:'',
         complement:'',
         phone:'',
-        cep:''
+        cep:'',
+        role:''
     })
  
 
@@ -54,7 +58,6 @@ export const GlobalState = (props:GlobalStateProps)=>{
         }).catch(e => console.error(e.response.data))
     }
 
-
     const getProfile = ()=>{
         axios.get(`${BASE_URL}/profile`, {
             headers: { Authorization: localStorage.getItem('token') }
@@ -67,7 +70,7 @@ export const GlobalState = (props:GlobalStateProps)=>{
 
     return(
         <Context.Provider value={{ 
-            getProfile, getAllOrders, cart, setCart, user,
+            getProfile, getAllOrders, cart, setCart, setUser, user,
             allFieldsFilled, setAllfieldsFilled
         }}>
             { props.children }

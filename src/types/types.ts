@@ -30,6 +30,7 @@ export interface User{
     complement:string
     phone:string
     cep:string
+    role:string
 }
 
 export interface Order{

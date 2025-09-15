@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import Context, { GlobalStateContext } from '../../global/Context'
 import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { MdDelete } from "react-icons/md"
 import Header from "../../components/Header"
 import formatPhoneNumber from '../../utils/formatPhoneNumber'
 import { Container } from './styled'
@@ -15,19 +14,24 @@ import { Order } from '../../types/types'
 
 
 const AdmUser = ()=>{
+    const cartRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
     const { user, getProfile } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
     const [orders, setOrders] = useState<Order[]>([])
-    const [hoveredItemId, setHoveredItemId] = useState<string>('')
   
   
 
     useEffect(()=>{
-
         if(!token){
             navigate('/meu-delivery')
-            return
+        }
+    }, [])
+
+
+    useEffect(()=>{
+        if(orders.length > 0){
+            cartRef.current?.scrollIntoView({ behavior:'smooth', block:'end'})
         }
     }, [])
 
@@ -46,7 +50,7 @@ const AdmUser = ()=>{
             headers: { Authorization: localStorage.getItem('token') }
         }
 
-        axios.get(`${BASE_URL}/finished_orders`, headers).then(res=>{
+        axios.get(`${BASE_URL}/orders`, headers).then(res=>{
             setOrders(res.data)
         }).catch(e => console.error(e.response.data))
     }
@@ -57,7 +61,7 @@ const AdmUser = ()=>{
 
         if(decide){
             localStorage.clear()
-            navigate('/meu-delivery')
+            navigate('/meu-delivery/login')
         }
     }
 
@@ -106,7 +110,7 @@ const AdmUser = ()=>{
             /* center={<h2 className="logo-title">DISK90 DELIVERY</h2>} */
             leftIcon={ <div/> }/>        
         <Container>    
-            <h1>Perfil do usuário</h1>            
+            <h1>Usuário ADM</h1>            
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             <div className="user-section">
                 <div>
@@ -134,12 +138,12 @@ const AdmUser = ()=>{
                 <div className="rest-name"></div>
                 <div></div>
             </div>
-            {orders.length > 0 && <button type="button" style={{padding:10, color:'white'}} onClick={cleanHistory}>
+            {/* {orders.length > 0 && <button type="button" style={{padding:10, color:'white'}} onClick={cleanHistory}>
                 Limpar Histórico
-            </button>}
-            <div id='history' className="order-history">Histórico de pedidos</div>
+            </button>} */}
+            <div id='history' className="order-history">Lista de pedido ativos</div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
-            <div className="card-container">
+            <div className="card-container" ref={cartRef}>
                 {orders && orders.map(order=>(
                     <div className="card" key={order.id}>
                         <div className="card-content">
@@ -149,12 +153,19 @@ const AdmUser = ()=>{
                             <b>Total:</b> R$ {Number(order.total).toFixed(2)}<br/>
                             <b>Pagamento:</b> {order.paymentmethod === 'money' ? 'Dinheiro' : 'Crédito'}<br/>
                         </div>
-                        <MdDelete className='icon' style={{
-                                color: hoveredItemId === order.id ? 'red' : 'black'
-                            }}
-                            onMouseOver={() => setHoveredItemId(order.id)}
-                            onMouseOut={() => setHoveredItemId('')}
-                            onClick={() => deleteOrder(order.id)}/>
+                        <div className="btn-container">
+                            {/* <MdDelete className='icon' style={{
+                                    color: hoveredItemId === order.id ? 'red' : 'black'
+                                }}
+                                onMouseOver={() => setHoveredItemId(order.id)}
+                                onMouseOut={() => setHoveredItemId('')}
+                                onClick={() => deleteOrder(order.id)}/> */}
+                            <button onClick={() => deleteOrder(order.id)}>Remover pedido</button>
+                            <button onClick={() =>{
+                                localStorage.setItem('client', order.client)
+                                navigate('/meu-delivery/admprofile')
+                            }}>Ver pedido</button>
+                        </div>
                     </div>
                 ))}
             </div>

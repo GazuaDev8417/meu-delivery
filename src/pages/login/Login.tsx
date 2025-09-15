@@ -45,6 +45,7 @@ const Login:FC = ()=>{
         setForm({ ...form, [name]:value })
     }
 
+
     const login = (e:FormEvent<HTMLFormElement>):void=>{
         e.preventDefault()
 
@@ -54,8 +55,8 @@ const Login:FC = ()=>{
         }
 
         axios.post(`${BASE_URL}/login`, body).then(res=>{
-            localStorage.setItem('token', res.data)
-            navigate('/meu-delivery')
+            localStorage.setItem('token', res.data.token)
+            res.data.role === 'ADM' ? navigate('/meu-delivery/admuser') : navigate('/meu-delivery')
         }).catch(e=>{
             alert(e.response.data)
         })
