@@ -118,7 +118,7 @@ const ProfileByAdm = ()=>{
                             <b>Pedido feito em:</b> {order.moment} <br/>
                             <b>Quantidade:</b> {order.quantity}<br/>
                             <b>Total:</b> R$ {Number(order.total).toFixed(2)}<br/>
-                            <b>Pagamento:</b> {order.paymentmethod === 'money' ? 'Dinheiro' : 'Crédito'}<br/>
+                            <b>Situação:</b> {order.state === 'FINISHED' ? 'Concluído' : 'Pendente'}<br/>                            
                         </div>
                     </div>
                 ))}

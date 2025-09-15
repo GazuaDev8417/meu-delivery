@@ -116,7 +116,7 @@ const Cart:FC = ()=>{
     }
 
 
-    /* const endOrders = ()=>{
+    const endOrders = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
@@ -128,7 +128,7 @@ const Cart:FC = ()=>{
                 setCart([])
             }
         ).catch(e => console.error(e.response.data))
-    } */
+    }
 
     /* const confirmClearOrders = ()=>{    
         const decide = window.confirm('Tem certeza que deseja deletar sua lista de pedidos?')
@@ -150,13 +150,13 @@ const Cart:FC = ()=>{
         const url = `https://wa.me/557184407882?text=${encodeURIComponent(mensagemUrl)}`
 /* 82354215 */
         window.open(url, '_blank')  
-        //endOrders()     
+        endOrders()     
     }
 
-    const confirmEndRequest = ()=>{
+    /* const confirmEndRequest = ()=>{
         const decide = window.confirm('Aqui você apenas notifica o vendedor sobre seu pedido, mas não efetua o pagamento.')
         if(decide) endRequests()
-    }
+    } */
 
 
     const handlePix = async()=>{
@@ -181,7 +181,7 @@ const Cart:FC = ()=>{
             const interval = setInterval(async () => {
                 const statusRes = await fetch(`${BASE_URL}/payment-status/${orderId}`)
                 const statusData = await statusRes.json();
-                console.log(statusData)
+                
                 if (statusData.status === 'approved') {
                     clearInterval(interval);
                     alert('Pagamento com Pix aprovado! 🎉');

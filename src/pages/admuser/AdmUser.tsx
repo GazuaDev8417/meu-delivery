@@ -87,7 +87,6 @@ const AdmUser = ()=>{
             rightIcon={
                 <AiOutlineLogout className="header-icon" onClick={logout} />
             }
-            /* center={<h2 className="logo-title">DISK90 DELIVERY</h2>} */
             leftIcon={ <div/> }/>        
         <Container>    
             <h1>Usuário ADM</h1>            
@@ -131,15 +130,9 @@ const AdmUser = ()=>{
                             <b>Pedido feito em:</b> {order.moment} <br/>
                             <b>Quantidade:</b> {order.quantity}<br/>
                             <b>Total:</b> R$ {Number(order.total).toFixed(2)}<br/>
-                            <b>Pagamento:</b> {order.paymentmethod === 'money' ? 'Dinheiro' : 'Crédito'}<br/>
+                            <b>Situação:</b> {order.state === 'FINISHED' ? 'Concluído' : 'Pendente'}<br/>
                         </div>
                         <div className="btn-container">
-                            {/* <MdDelete className='icon' style={{
-                                    color: hoveredItemId === order.id ? 'red' : 'black'
-                                }}
-                                onMouseOver={() => setHoveredItemId(order.id)}
-                                onMouseOut={() => setHoveredItemId('')}
-                                onClick={() => deleteOrder(order.id)}/> */}
                             <button onClick={() => deleteOrder(order.id)}>Remover pedido</button>
                             <button onClick={() =>{
                                 localStorage.setItem('client', order.client)

@@ -116,6 +116,15 @@ export const Container = styled.div`
         justify-content: space-between;
     }
 
+    .btn-container button:nth-child(2){
+        background-color: lightblue;
+        color: black;
+
+        &:hover{
+            box-shadow: 0 0 8px black;
+        }
+    }
+
 /* MEDIA QUERY */
     @media(max-width: 660px){
         h1{
