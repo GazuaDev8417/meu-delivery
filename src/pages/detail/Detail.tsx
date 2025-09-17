@@ -334,11 +334,6 @@ const Detail:FC = ()=>{
                     ))}
                 </div>
             </div>
-            {/* <Modal 
-                isVisible={modalVisible} 
-                product={selectedProduct}
-                request={handleFinalRequest}
-                onClose={() => setModalVisible(false)} /> */} 
         </Container>
         </>
     )

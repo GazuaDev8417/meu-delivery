@@ -16,10 +16,12 @@ import fantalaranjalata from '/imgs/products/fanta-laranja-lata.webp'
 import redlabel from '/imgs/products/red_label.webp'
 import ballantine from '/imgs/products/ballantines_12_anos.webp'
 import blacklabel from '/imgs/products/black-label.webp'
+import chivas from '/imgs/products/chivas.webp'
 /* CONHAQUE */
 import dreher from '/imgs/products/dreher.webp'
 import domus from '/imgs/products/domus.webp'
-
+import domeq from '/imgs/products/domeq.webp'
+import hennessy from '/imgs/products/henessy.webp'
 
 
 
@@ -44,8 +46,11 @@ export const productsImages:Record<string, string> = {
     redlabel,
     ballantine,
     blacklabel,
+    chivas,
     /* CONHAQUE */
     dreher,
     domus,
+    domeq,
+    hennessy
 }
 
