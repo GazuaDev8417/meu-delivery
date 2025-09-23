@@ -50,7 +50,7 @@ const AdmUser = ()=>{
             headers: { Authorization: localStorage.getItem('token') }
         }
 
-        axios.get(`${BASE_URL}/orders`, headers).then(res=>{
+        axios.get(`${BASE_URL}/restaurant/orders`, headers).then(res=>{
             setOrders(res.data)
         }).catch(e => console.error(e.response.data))
     }

@@ -121,19 +121,6 @@ const Detail:FC = ()=>{
     
     
     
-    const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
-        const grouped = products.reduce((acc, product)=>{
-            if(!acc[product.category]){
-                acc[product.category] = { category: product.category, items: []}
-            }
-            acc[product.category].items.push(product)
-            return acc
-        }, {} as Record<string, GroupedProducts>)
-
-        return Object.values(grouped)
-    }
-
-
     const getProducts = ()=>{
         axios.get(`${BASE_URL}/restaurant_products`)
             .then(res =>{
@@ -151,6 +138,19 @@ const Detail:FC = ()=>{
             })
             .catch(e => console.error(e.response.data))
     }  
+
+
+    const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
+        const grouped = products.reduce((acc, product)=>{
+            if(!acc[product.category]){
+                acc[product.category] = { category: product.category, items: []}
+            }
+            acc[product.category].items.push(product)
+            return acc
+        }, {} as Record<string, GroupedProducts>)
+
+        return Object.values(grouped)
+    }
 
 
     /* const handleFinalRequest = (product:Products)=>{

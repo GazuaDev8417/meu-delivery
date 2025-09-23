@@ -107,9 +107,9 @@ const Login:FC = ()=>{
                         <button className="login-button" type="submit">Entrar</button>
                     </div>
                 </form>
-                <p>
+                {/* <p>
                     Não possui cadastro? clique <Link to='/meu-delivery/signup'> aqui</Link>
-                </p>
+                </p> */}
             </Container>
         </>
     )

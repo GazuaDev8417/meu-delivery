@@ -11,6 +11,8 @@ import { Order, User } from '../../types/types'
 
 
 
+
+
 const ProfileByAdm = ()=>{
     const cartRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
@@ -72,6 +74,7 @@ const ProfileByAdm = ()=>{
             cartRef.current?.scrollIntoView({ behavior:'smooth', block:'start'})
         }
     }, [orders])
+    
     
 
 
