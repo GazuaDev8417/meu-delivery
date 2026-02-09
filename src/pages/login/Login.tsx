@@ -55,8 +55,14 @@ const Login:FC = ()=>{
         }
 
         axios.post(`${BASE_URL}/login`, body).then(res=>{
+            if(res.data.role === 'ADM'){
+                alert('Essa plataforma não permite usuários ADM')
+                return
+            }
+            
             localStorage.setItem('token', res.data.token)
-            res.data.role === 'ADM' ? navigate('/meu-delivery/admuser') : navigate('/meu-delivery')
+            navigate('/meu-delivery')
+            
         }).catch(e=>{
             alert(e.response.data)
         })
