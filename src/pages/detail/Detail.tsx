@@ -138,7 +138,8 @@ const Detail:FC = ()=>{
             })
             .catch(e => console.error(e.response.data))
     }  
-
+console.log(restaurant)
+console.log(restaurant.logourl)
 
     const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
         const grouped = products.reduce((acc, product)=>{
