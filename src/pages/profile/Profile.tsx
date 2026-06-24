@@ -4,24 +4,24 @@ import { useNavigate } from 'react-router-dom'
 import { MdEdit } from 'react-icons/md'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { IoIosArrowBack } from 'react-icons/io'
-import { MdDelete } from "react-icons/md"
+//import { MdDelete } from "react-icons/md"
 import Header from "../../components/Header"
 import formatPhoneNumber from '../../utils/formatPhoneNumber'
 import { Container } from './styled'
-import { BASE_URL } from '../../constants/url'
-import axios from 'axios'
-import { Order } from '../../types/types'
+/* import { BASE_URL } from '../../constants/url'
+import axios from 'axios' */
+//import { Order } from '../../types/types'
 
 
 
 
 const Profile = ()=>{
-    const cartRef = useRef<HTMLDivElement>(null)
+    //const cartRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
     const { user, getProfile } = useContext(Context) as GlobalStateContext
     const token = localStorage.getItem('token')
-    const [orders, setOrders] = useState<Order[]>([])
-    const [hoveredItemId, setHoveredItemId] = useState<string>('')
+    //const [orders, setOrders] = useState<Order[]>([])
+    //const [hoveredItemId, setHoveredItemId] = useState<string>('')
   
 
     useEffect(()=>{
@@ -32,21 +32,21 @@ const Profile = ()=>{
     }, [])
 
 
-    useEffect(()=>{
+    /* useEffect(()=>{
         if(orders.length > 0){
             cartRef.current?.scrollIntoView({ behavior:'smooth', block:'start'})
         }
-    }, [orders])
+    }, [orders]) */
 
     
     useEffect(()=>{
         getProfile()
-        orderHistory()
+        //orderHistory()
     }, [])
 
 
 
-    const orderHistory = ()=>{
+    /* const orderHistory = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
@@ -54,7 +54,7 @@ const Profile = ()=>{
         axios.get(`${BASE_URL}/finished_orders`, headers).then(res=>{
             setOrders(res.data)
         }).catch(e => console.error(e.response.data))
-    }
+    } */
 
     
     const logout = ()=>{
@@ -67,7 +67,7 @@ const Profile = ()=>{
     }
 
 
-    const deleteOrder = (id:string)=>{
+    /* const deleteOrder = (id:string)=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
@@ -76,10 +76,10 @@ const Profile = ()=>{
             setOrders(prevOrders => prevOrders.filter(order => order.id !== id))
             orderHistory()
         }).catch(e => alert(e.response.data))
-    }
+    } */
 
 
-    const cleanHistory = ()=>{
+    /* const cleanHistory = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
@@ -97,7 +97,7 @@ const Profile = ()=>{
                 setOrders([])
             }).catch(e => console.error(e.response.data))
         }
-    }
+    } */
     
 
 
@@ -138,10 +138,10 @@ const Profile = ()=>{
                 <div className="rest-name"></div>
                 <div></div>
             </div>
-            {orders.length > 0 && <button type="button" style={{padding:10, color:'white'}} onClick={cleanHistory}>
+            {/* orders.length > 0 && <button type="button" style={{padding:10, color:'white'}} onClick={cleanHistory}>
                 Limpar Histórico
-            </button>}
-            <div id='history' className="order-history">Histórico de pedidos</div>
+            </button> */}
+            {/* <div id='history' className="order-history">Histórico de pedidos</div>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             <div className="card-container" ref={cartRef}>
                 {orders && orders.map(order=>(
@@ -160,7 +160,7 @@ const Profile = ()=>{
                             onClick={() => deleteOrder(order.id)}/>
                     </div>
                 ))}
-            </div>
+            </div> */}
         </Container>
         </>
     )
