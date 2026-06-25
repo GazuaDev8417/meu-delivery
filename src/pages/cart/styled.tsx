@@ -1,20 +1,23 @@
 import styled from 'styled-components'
 
 
-interface ContainerProps{
+/* interface ContainerProps{
     $hasqrcode:boolean
-}
 
-export const Container = styled.div<ContainerProps>`
+    O código abaixo deve ser posto abaixo do margin
+    padding-bottom: ${({ $hasqrcode }) => ($hasqrcode ? '0' : '100px' )};
+} */
+
+export const Container = styled.div`/* <ContainerProps> */
     display: flex;
     align-items: center;
     flex-direction: column;
     margin: 15vh 5rem;
-    padding-bottom: ${({ $hasqrcode }) => ($hasqrcode ? '0' : '100px' )};
+    padding-bottom: 100px;
 
     h1{
         text-align: center;
-        margin: 20px 0 10vh;
+        margin: 20px 0 5vh;
     }
 
     .address-section{

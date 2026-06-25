@@ -10,13 +10,13 @@ import { Order } from "../../types/types"
 import { useNavigate } from "react-router-dom"
 import { Container } from "./styled"
 import { productsImages } from '../../constants/index'
-import MpModal from "../../components/MpModal"
-import { initMercadoPago } from "@mercadopago/sdk-react"
+//import MpModal from "../../components/MpModal"
+//import { initMercadoPago } from "@mercadopago/sdk-react"
 
 
 
 
-initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
+//initMercadoPago(import.meta.env.VITE_PUBLIC_KEY_TP)
 
 const Cart:FC = ()=>{
     const navigate = useNavigate()
@@ -39,12 +39,12 @@ const Cart:FC = ()=>{
     /* MODAL */
     const [mpModalOpen, setMpModalOpen] = useState<boolean>(false)
     /* ORDERM DE PAGAMENTO */
-    const [status, setStatus] = useState<string>('')
+    /* const [status, setStatus] = useState<string>('')
     const [qrCode, setQrCode] = useState<string | null>(null)
     const [qrCodeBase64, setQrCodeBase64] = useState<string | null>(null)
     const [qrCodeLink, setQrCodeLink] = useState<string | null>(null)
-    const [method, setMethod] = useState<'pix' | 'boleto' | 'card' | null>(null)
-    const hasQrCode = !!(qrCode || qrCodeBase64 || qrCodeLink)
+    const [method, setMethod] = useState<'pix' | 'boleto' | 'card' | null>(null) 
+    const hasQrCode = !!(qrCode || qrCodeBase64 || qrCodeLink)*/
     
 
 
@@ -74,13 +74,13 @@ const Cart:FC = ()=>{
         }
     }, [])
 
-    useEffect(()=>{
+    /* useEffect(()=>{
         if(hasQrCode && qrCodeRef.current){
             qrCodeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
         }else if(cart.length > 0 && cartRef.current){
             cartRef.current?.scrollIntoView({ behavior:'smooth', block:'start'})
         }
-    }, [hasQrCode, cart])
+    }, [hasQrCode, cart]) */
 
     
 
@@ -116,7 +116,7 @@ const Cart:FC = ()=>{
     }
 
 
-    const endOrders = ()=>{
+    /* const endOrders = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
@@ -128,7 +128,7 @@ const Cart:FC = ()=>{
                 setCart([])
             }
         ).catch(e => console.error(e.response.data))
-    }
+    } */
 
     /* const confirmClearOrders = ()=>{    
         const decide = window.confirm('Tem certeza que deseja deletar sua lista de pedidos?')
@@ -147,10 +147,10 @@ const Cart:FC = ()=>{
         ).join('\n')
         const totalGroup = `Total Geral R$ ${Number(total).toFixed(2)}`
         const mensagemUrl = `Novo pedido:\n\n${newMsg}\n\n${totalGroup}\n\nPara o endereço: ${address}\nCEP: ${cep}\nLocal: ${local}\n${referencia.trim()}\nFalar com: ${talkTo}`
-        const url = `https://wa.me/557184407882?text=${encodeURIComponent(mensagemUrl)}`
+        const url = `https://wa.me/557182354215?text=${encodeURIComponent(mensagemUrl)}`
 /* 82354215 */
         window.open(url, '_blank')  
-        endOrders()     
+        //endOrders()     
     }
 
     /* const confirmEndRequest = ()=>{
@@ -159,7 +159,7 @@ const Cart:FC = ()=>{
     } */
 
 
-    const handlePix = async()=>{
+    /* const handlePix = async()=>{
         alert('Como se trata de um projeto demonstrativo o pagamento não é realizado realmente')
         try{
             const res = await axios.post(`${BASE_URL}/pay`, {
@@ -196,9 +196,9 @@ const Cart:FC = ()=>{
                 console.error('Erro inesperado, tente novamente: ', e)
             }
         }
-    }
+    } */
 
-    const handlePaymentCard = ()=>{
+    /* const handlePaymentCard = ()=>{
         alert('Como se trata de um projeto demonstrativo o pagamento não é realizado realmente')
         setQrCode(null)
         setQrCodeBase64(null)
@@ -206,7 +206,7 @@ const Cart:FC = ()=>{
 
         setMethod('card')
         setMpModalOpen(true)
-    }
+    } */
 
     
     
@@ -220,7 +220,7 @@ const Cart:FC = ()=>{
                 <IoPersonOutline className="header-icon"
                     onClick={() => navigate('/profile')} />
             }/>
-        <Container $hasqrcode={hasQrCode}>
+        <Container /* $hasqrcode={hasQrCode} */>
             <h1>Meu Carrinho</h1>
             <hr style={{width:'100%', marginBottom:'15px', background:'lightgray'}} />
             <div className="address-section">
@@ -267,11 +267,11 @@ const Cart:FC = ()=>{
                 )) : <div style={{margin:10}}>Você ainda não fez nenhum pedido</div> }
             </div>
             {/* MEIOS DE PAGAMENTO */}
-            {mpModalOpen && method === 'card' && (
+            {/* mpModalOpen && method === 'card' && (
                 <MpModal setModalOpen={setMpModalOpen} setQrCode={setQrCode} total={total}/>
-            )}
+            ) */}
             {/* QRCODE E PIX */}
-            {method === 'pix' && (qrCode || qrCodeBase64 || qrCodeLink) && (
+            {/* method === 'pix' && (qrCode || qrCodeBase64 || qrCodeLink) && (
                 <div ref={qrCodeRef} style={{marginTop:'1.5rem', paddingBottom:'110px'}}>
                     <p>Escaneie o QR Code para pagar:</p>
                     {qrCodeBase64 ? (
@@ -294,19 +294,19 @@ const Cart:FC = ()=>{
                     )}
                     {status && <p style={{marginTop:'2rem'}}>Status: {status === 'pending' ? 'Pendente' : 'Concluído'}</p>}
                 </div>
-            )}
+            ) */}
             {cart.length > 0 && (
                 <div className="total-container">
                     <div className="totalByGroup"><b>Total</b>: R$ {Number(total).toFixed(2)}</div>
                     <hr style={{background:'lightgray', margin:'3px', width:'15%'}} />
-                    <div style={{display:'flex', gap:'1rem'}}>
+                    {/* <div style={{display:'flex', gap:'1rem'}}>
                         <button onClick={() =>{
                             setMethod('pix') 
                             handlePix()
                         }} >Pix</button>
 
                         <button onClick={handlePaymentCard} >Cartão</button>
-                    </div>
+                    </div> */}
                     <button 
                         className="requestOrder-btn"
                         style={{background: cart.length > 0 && user ? 'red' : 'gray'}}
