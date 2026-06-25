@@ -238,7 +238,7 @@ const Detail:FC = ()=>{
         window.open(url, '_blank')
     }
 
-    console.log(restaurant.address)
+    console.log(restaurant.logourl)
 
     
     return(
@@ -263,7 +263,7 @@ const Detail:FC = ()=>{
             <div className="card">
                 <div className="rest-name">{restaurant.name}</div>
                 <img 
-                    src={`/meu-delivery/imgs/restaurants/${restaurant.logourl}`}
+                    src={`/imgs/restaurants/${restaurant.logourl}`}
                     alt="Imagem do restaurante"
                     className="image"/>
                 <button className="location" onClick={getPlace}>
