@@ -9,11 +9,6 @@ export const Container = styled.div`
     height: 100vh;
     padding: 1rem;
     
-    @media(max-width: 768px){
-        justify-content: flex-start;
-        margin-top: 10vh;
-    }
-    
     .title{
         font-size: 2rem;
         margin-bottom: 2rem;

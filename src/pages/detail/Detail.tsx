@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom"
 import Context, { GlobalStateContext } from "../../global/Context"
 import Header from "../../components/Header"
 import { IoPersonOutline, IoCartOutline } from "react-icons/io5"
+import { FaMapMarkerAlt } from "react-icons/fa"
 import { Products, Restaurant } from "../../types/types"
 import { Container } from './styled'
 import axios from "axios"
@@ -138,8 +139,7 @@ const Detail:FC = ()=>{
             })
             .catch(e => console.error(e.response.data))
     }  
-console.log(restaurant)
-console.log(restaurant.logourl)
+    
 
     const groupedByCategory = (products:Products[]):GroupedProducts[]=>{
         const grouped = products.reduce((acc, product)=>{
@@ -232,7 +232,13 @@ console.log(restaurant.logourl)
         setSearchWord(e.target.value)
     }
 
-    
+
+    const getPlace = ()=>{
+        const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.address)}`
+        window.open(url, '_blank')
+    }
+
+    console.log(restaurant.address)
 
     
     return(
@@ -259,7 +265,11 @@ console.log(restaurant.logourl)
                 <img 
                     src={`/meu-delivery/imgs/restaurants/${restaurant.logourl}`}
                     alt="Imagem do restaurante"
-                    className="image"/>               
+                    className="image"/>
+                <button className="location" onClick={getPlace}>
+                    Localização
+                    <FaMapMarkerAlt />
+                </button>               
                 <div className="desc">
                     <p>
                         {restaurant.description}

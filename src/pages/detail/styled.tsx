@@ -5,10 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
     margin-top: 2vh;
-    h1{
-        text-align: center;
-        margin: 5vh 0 3vh;
-    }
+    
     .card{
         display: flex;
         flex-direction: column;
@@ -24,6 +21,21 @@ export const Container = styled.div`
         margin-top: 20px;
         box-shadow: 2px 2px 4px;
         border-radius: 10px;
+    }
+
+    .location{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 30px;
+        border: 1px solid;
+        padding: 10px;
+        border-radius: 10px;
+        transition: .5s ease-in;
+    }
+
+    .location:active{
+        transform: scale(.9);
     }
 
     .desc{
@@ -106,6 +118,7 @@ export const Container = styled.div`
 
 /* MEDIA QUERIES */
     @media(max-width: 830px){
+        margin-top: 7vh;
         .card{
             width: 80vw;
         }

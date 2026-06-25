@@ -3,7 +3,7 @@ import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { FaEyeSlash, FaEye } from 'react-icons/fa'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Container } from "./styled"
 
 
