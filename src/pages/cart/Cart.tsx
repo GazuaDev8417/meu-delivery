@@ -20,7 +20,7 @@ import { productsImages } from '../../constants/index'
 
 const Cart:FC = ()=>{
     const navigate = useNavigate()
-    const qrCodeRef = useRef<HTMLDivElement>(null)
+    //const qrCodeRef = useRef<HTMLDivElement>(null)
     const cartRef = useRef<HTMLDivElement>(null)
     const { 
         cart, setCart, getAllOrders, getProfile, user
@@ -37,7 +37,7 @@ const Cart:FC = ()=>{
         cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0)
     const [total, setTotal] = useState<number>(calculateTotal(cart))
     /* MODAL */
-    const [mpModalOpen, setMpModalOpen] = useState<boolean>(false)
+    //const [mpModalOpen, setMpModalOpen] = useState<boolean>(false)
     /* ORDERM DE PAGAMENTO */
     /* const [status, setStatus] = useState<string>('')
     const [qrCode, setQrCode] = useState<string | null>(null)
@@ -61,7 +61,7 @@ const Cart:FC = ()=>{
         setTotal(cart.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0))
     }, [cart])    
 
-    useEffect(()=>{
+    /* useEffect(()=>{
         const handleKeydown = (e:KeyboardEvent)=>{
             if(e.key === 'Escape' || e.key === 'Esc'){
                 setMpModalOpen(false)
@@ -72,7 +72,7 @@ const Cart:FC = ()=>{
         return () =>{
             window.removeEventListener('keydown', handleKeydown)
         }
-    }, [])
+    }, []) */
 
     /* useEffect(()=>{
         if(hasQrCode && qrCodeRef.current){
