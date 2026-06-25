@@ -26,7 +26,7 @@ const Profile = ()=>{
 
     useEffect(()=>{
         if(!token){
-            navigate('/meu-delivery')
+            navigate('/')
             return
         }
     }, [])
@@ -62,7 +62,7 @@ const Profile = ()=>{
 
         if(decide){
             localStorage.clear()
-            navigate('/meu-delivery')
+            navigate('/')
         }
     }
 
@@ -118,7 +118,7 @@ const Profile = ()=>{
                     <span className='properties'>Email:</span> {user.email} <br />
                     <span className='properties'>Telefone:</span> {formatPhoneNumber(user.phone)}
                 </div>
-                <MdEdit className="icon" onClick={()=> navigate('/meu-delivery/edit-profile')} />
+                <MdEdit className="icon" onClick={()=> navigate('/edit-profile')} />
             </div>
             <div className="address-section">
                 <div style={{width:'100%'}}>
@@ -131,7 +131,7 @@ const Profile = ()=>{
                     </div>
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/meu-delivery/user-address', { state: { mode: 'update' } })
+                    navigate('/user-address', { state: { mode: 'update' } })
                 }}/>
             </div>
             <div className="addressAndName">

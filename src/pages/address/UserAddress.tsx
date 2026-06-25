@@ -95,7 +95,7 @@ const UserAddress:FC = ()=>{
         }
         
         axios.patch(`${BASE_URL}/user-address`, body, headers).then(()=>{
-            navigate(mode === 'create' ? '/meu-delivery' : mode === 'update' ? '/meu-delivery/profile' : '/meu-delivery/cart')
+            navigate(mode === 'create' ? '/' : mode === 'update' ? '/profile' : '/cart')
         }).catch(e=>{
             alert(e.response.data)
         })

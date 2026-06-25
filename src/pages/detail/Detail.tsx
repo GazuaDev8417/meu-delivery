@@ -188,7 +188,7 @@ const Detail:FC = ()=>{
         if(!token){
             const decide = window.confirm('Necessário efetuar login para fazer pedidos')
             if(decide){
-                navigate('/meu-delivery/login')
+                navigate('/login')
             }
             return
         }
@@ -211,13 +211,13 @@ const Detail:FC = ()=>{
             getAllOrders()
             const decide = confirm(res.data)
             if(decide){
-                navigate('/meu-delivery/cart')
+                navigate('/cart')
             }
         }).catch(e=>{
             const message = e.response?.data || 'Erro ao enviar pedido. Tente novamente.'
             const decide = confirm(message)
             if(decide){
-                navigate('/meu-delivery/cart')
+                navigate('/cart')
             }
         })
     }
@@ -247,7 +247,7 @@ const Detail:FC = ()=>{
             leftIcon={ 
                 token ? (
                     <IoCartOutline className="header-icon" onClick={()=>{
-                        navigate('/meu-delivery/cart')
+                        navigate('/cart')
                     }}/>
                 ) : <div/>
             }
@@ -255,7 +255,7 @@ const Detail:FC = ()=>{
             rightIcon={
                 token ? (
                     <IoPersonOutline className="header-icon" onClick={()=>{
-                        navigate('/meu-delivery/profile')
+                        navigate('/profile')
                     }}/>
                 ) : <div/>
             }/>

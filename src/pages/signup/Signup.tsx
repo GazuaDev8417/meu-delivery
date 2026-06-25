@@ -33,7 +33,7 @@ const Signup:FC = ()=>{
         const token = localStorage.getItem('token')
 
         if(token){
-            navigate('/meu-delivery')
+            navigate('/')
         }
     }, [])
 
@@ -58,7 +58,7 @@ const Signup:FC = ()=>{
         
         axios.post(`${BASE_URL}/signup`, body).then(res=>{
             localStorage.setItem('token',res.data)
-            navigate('/meu-delivery/user-address', { state: { mode: 'create' } })
+            navigate('/user-address', { state: { mode: 'create' } })
         }).catch(e=>{
             alert(e.response.data)
         })
@@ -150,7 +150,7 @@ const Signup:FC = ()=>{
                         <button 
                             className="signup-button signup-button-exception"
                             type="button"
-                            onClick={()=> navigate('/meu-delivery/login')}>Voltar para login</button>
+                            onClick={()=> navigate('/login')}>Voltar para login</button>
                     </div>
                 </form>
             </Container>

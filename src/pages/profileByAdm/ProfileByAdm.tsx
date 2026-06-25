@@ -37,7 +37,7 @@ const ProfileByAdm = ()=>{
 
     useEffect(()=>{
         if(!token){
-            navigate('/meu-delivery')
+            navigate('/')
             return
         }
     }, [])

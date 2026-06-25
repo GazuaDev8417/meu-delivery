@@ -17,14 +17,14 @@ const Router:FC = ()=>{
 
     return(
         <Routes>
-            <Route path="/meu-delivery" element={<Detail/>}/>
-            <Route path="/meu-delivery/cart" element={<Cart/>} />
-            <Route path="/meu-delivery/profile" element={<Profile/>} />
-            <Route path="/meu-delivery/edit-profile" element={<EditProfile/>} />
-            <Route path="/meu-delivery/signup" element={<Signup/>} />
-            <Route path="/meu-delivery/user-address" element={<UserAddress/>} />
-            <Route path="/meu-delivery/login" element={<Login/>} />
-            <Route path="/meu-delivery/admprofile" element={<ProfileByAdm/>} />
+            <Route path="/" element={<Detail/>}/>
+            <Route path="/cart" element={<Cart/>} />
+            <Route path="/profile" element={<Profile/>} />
+            <Route path="/edit-profile" element={<EditProfile/>} />
+            <Route path="/signup" element={<Signup/>} />
+            <Route path="/user-address" element={<UserAddress/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/admprofile" element={<ProfileByAdm/>} />
         </Routes>
     )
 }

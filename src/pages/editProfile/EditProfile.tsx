@@ -29,7 +29,7 @@ const EditProfile:FC = ()=>{
         const token = localStorage.getItem('token')
 
         if(!token){
-            navigate('/meu-delivery')
+            navigate('/')
         }
     }, [])
 
@@ -54,7 +54,7 @@ const EditProfile:FC = ()=>{
         }
         
         axios.patch(`${BASE_URL}/user`, body, headers).then(()=>{
-            navigate('/meu-delivery/profile')
+            navigate('/profile')
         }).catch(e=>{
             alert(e.response.data)
         })
@@ -121,7 +121,7 @@ const EditProfile:FC = ()=>{
                         <button 
                             className="signup-button signup-button-exception"
                             type="button"
-                            onClick={()=> navigate('/meu-delivery/')}>Voltar para home</button>
+                            onClick={()=> navigate('/')}>Voltar para home</button>
                     </div>
                 </form>
         </Container>

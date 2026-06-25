@@ -27,7 +27,7 @@ const Login:FC = ()=>{
         const token = localStorage.getItem('token')
         
         if(token){
-            navigate('/meu-delivery')
+            navigate('/')
         }
     }, [])
 
@@ -61,7 +61,7 @@ const Login:FC = ()=>{
             }
             
             localStorage.setItem('token', res.data.token)
-            navigate('/meu-delivery')
+            navigate('/')
             
         }).catch(e=>{
             alert(e.response.data)
@@ -114,7 +114,7 @@ const Login:FC = ()=>{
                     </div>
                 </form>
                 {/* <p>
-                    Não possui cadastro? clique <Link to='/meu-delivery/signup'> aqui</Link>
+                    Não possui cadastro? clique <Link to='/signup'> aqui</Link>
                 </p> */}
             </Container>
         </>

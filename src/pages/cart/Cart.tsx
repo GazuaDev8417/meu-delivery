@@ -50,7 +50,7 @@ const Cart:FC = ()=>{
 
     useEffect(()=>{
         if(!token){
-            navigate('/meu-delivery')
+            navigate('/')
             return
         }
         getProfile()
@@ -218,7 +218,7 @@ const Cart:FC = ()=>{
             /* center={ <h2 className="logo-title">DISK90 DELIVERY</h2> } */
             rightIcon={
                 <IoPersonOutline className="header-icon"
-                    onClick={() => navigate('/meu-delivery/profile')} />
+                    onClick={() => navigate('/profile')} />
             }/>
         <Container $hasqrcode={hasQrCode}>
             <h1>Meu Carrinho</h1>
@@ -232,7 +232,7 @@ const Cart:FC = ()=>{
                     <b>Falar com</b>: {talkTo}
                 </div>
                 <MdEdit className="icon" onClick={()=> {
-                    navigate('/meu-delivery/user-address', { state: { mode: 'cart' }})
+                    navigate('/user-address', { state: { mode: 'cart' }})
                 }} />
             </div>
             <div className="addressAndName">
