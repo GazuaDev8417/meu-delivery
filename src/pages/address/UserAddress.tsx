@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState, useEffect } from "react"
+import { ChangeEvent, FC, FormEvent, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
@@ -23,7 +23,7 @@ const UserAddress:FC = ()=>{
     const navigate = useNavigate()
     const location = useLocation()
     const mode = location.state?.mode || 'create'
-    const token = localStorage.getItem('token')
+    //const token = localStorage.getItem('token')
     const [form, setForm] = useState<FormData>({
         street:'',
         cep:'',
@@ -36,7 +36,7 @@ const UserAddress:FC = ()=>{
 
 
 
-    useEffect(()=>{
+    /* useEffect(()=>{
         if(!token) return
 
         axios.get(`${BASE_URL}/address`, {
@@ -50,7 +50,7 @@ const UserAddress:FC = ()=>{
             }
         })
         .catch(e => console.error(e.response.data))        
-    }, [])
+    }, []) */
     
     
 

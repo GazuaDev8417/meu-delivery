@@ -7,7 +7,7 @@ import UserAddress from "../pages/address/UserAddress"
 import Login from "../pages/login/Login"
 import Profile from "../pages/profile/Profile"
 import EditProfile from "../pages/editProfile/EditProfile"
-import ProfileByAdm from "../pages/profileByAdm/ProfileByAdm"
+//import ProfileByAdm from "../pages/profileByAdm/ProfileByAdm"
 
 
 
@@ -24,7 +24,7 @@ const Router:FC = ()=>{
             <Route path="/signup" element={<Signup/>} />
             <Route path="/user-address" element={<UserAddress/>} />
             <Route path="/login" element={<Login/>} />
-            <Route path="/admprofile" element={<ProfileByAdm/>} />
+            {/* <Route path="/admprofile" element={<ProfileByAdm/>} /> */}
         </Routes>
     )
 }

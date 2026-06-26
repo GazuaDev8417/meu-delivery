@@ -3,7 +3,7 @@ import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import Header from "../../components/Header"
 import { FaEyeSlash, FaEye } from 'react-icons/fa'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Container } from "./styled"
 
 
@@ -113,9 +113,9 @@ const Login:FC = ()=>{
                         <button className="login-button" type="submit">Entrar</button>
                     </div>
                 </form>
-                {/* <p>
+                <p>
                     Não possui cadastro? clique <Link to='/signup'> aqui</Link>
-                </p> */}
+                </p>
             </Container>
         </>
     )

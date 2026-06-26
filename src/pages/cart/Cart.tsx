@@ -120,9 +120,8 @@ const Cart:FC = ()=>{
         const headers = {
             headers: { Authorization: localStorage.getItem('token') }
         }
-        const body = { paymentMethod: method }
 
-        axios.patch(`${BASE_URL}/finish_orders`, body, headers)
+        axios.patch(`${BASE_URL}/finish_orders`, headers)
             .then(() =>{
                 getAllOrders()
                 setCart([])

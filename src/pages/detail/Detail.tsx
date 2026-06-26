@@ -238,7 +238,7 @@ const Detail:FC = ()=>{
         window.open(url, '_blank')
     }
 
-    console.log(restaurant.logourl)
+    
 
     
     return(
