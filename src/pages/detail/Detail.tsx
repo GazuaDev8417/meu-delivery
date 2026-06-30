@@ -322,7 +322,7 @@ const Detail:FC = ()=>{
                                     <img
                                         className="product-image" 
                                         src={productsImages[product.photoUrl]}
-                                        alt="Foto do produto"/>
+                                        /* alt="Foto do produto" *//>
                                     <div className="product-desc">
                                         <h4>{product.name}</h4><br/>
                                         {product.description}<br/><br/>

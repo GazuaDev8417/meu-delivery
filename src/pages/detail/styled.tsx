@@ -94,6 +94,7 @@ export const Container = styled.div`
         box-shadow: 2px 2px 4px;
         margin: 10px;
         padding: 10px;
+        width: 60vw;
     }
 
     .product-image{
